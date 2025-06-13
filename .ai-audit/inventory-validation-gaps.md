@@ -16,6 +16,11 @@ This document lists all input validation and sanitization gaps found in the code
 - **Throughout**: Form context and field management are present, but no explicit validation schemas or sanitization logic are enforced at the component level.
   - **Risk:** Potential for inconsistent validation across forms.
 
+## 4. src/lib/api.ts
+- **Throughout**: API error handling is basic (throws on non-OK status, but does not validate the shape or content of the response JSON).
+  - **Risk:** Consumers of the API utility may receive unexpected or malformed data without validation, leading to potential runtime errors.
+  - **Suggestion:** Implement structured error handling and validate response shapes (e.g., using Zod or custom type guards).
+
 ---
 
 **Note:** No evidence of schema validation libraries (Yup, Zod, Joi) or input sanitization utilities in the codebase. Recommend implementing comprehensive validation and sanitization for all user input. 

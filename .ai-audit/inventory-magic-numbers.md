@@ -16,6 +16,10 @@ This document lists all magic numbers and hardcoded constants found in the codeb
 - **Throughout**: Hardcoded class names, placeholder text, and color codes in component definitions (e.g., input, select, textarea, button, sidebar).
   - **Suggestion:** Extract repeated class names and display values to a UI constants file for maintainability.
 
+## 4. src/lib/api.ts
+- **Lines 1-2**: Hardcoded constants for BASE_URL ('/api') and TIMEOUT_MS (10000 ms).
+  - **Suggestion:** Extract these values to a shared config/constants file for consistency and maintainability.
+
 ---
 
 **Note:** This is a sample; a full codebase scan may reveal additional magic numbers/constants, especially as new features are added. 
