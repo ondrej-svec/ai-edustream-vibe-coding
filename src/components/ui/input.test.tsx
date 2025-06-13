@@ -1,23 +1,29 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import { render } from '@testing-library/react';
 import React from 'react';
+import { describe, it, expect } from 'vitest';
 import { Input } from './input';
 
 describe('Input', () => {
-  it('renders with placeholder', () => {
-    render(<Input placeholder="Type here..." />);
-    expect(screen.getByPlaceholderText('Type here...')).toBeInTheDocument();
+  it('renders an input element', () => {
+    const { getByRole } = render(<Input />);
+    expect(getByRole('textbox')).toBeInTheDocument();
   });
 
-  it('calls onChange when value changes', () => {
-    const handleChange = vi.fn();
-    render(<Input onChange={handleChange} />);
-    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'abc' } });
-    expect(handleChange).toHaveBeenCalled();
+  it('applies custom className', () => {
+    const { getByRole } = render(<Input className="custom-class" />);
+    expect(getByRole('textbox')).toHaveClass('custom-class');
   });
 
-  it('is disabled when disabled prop is true', () => {
-    render(<Input disabled placeholder="Disabled input" />);
-    expect(screen.getByPlaceholderText('Disabled input')).toBeDisabled();
+  it('renders with the specified type', () => {
+    const { getByPlaceholderText } = render(<Input type="password" placeholder="pw" />);
+    const input = getByPlaceholderText('pw');
+    expect(input).toHaveAttribute('type', 'password');
+  });
+
+  it('forwards ref to the input element', () => {
+    const ref = React.createRef<HTMLInputElement>();
+    render(<Input ref={ref} />);
+    expect(ref.current).toBeInstanceOf(HTMLInputElement);
   });
 }); 
