@@ -5,9 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TastePreferences } from "@/pages/Index";
 import { useToast } from "@/hooks/use-toast";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 interface TasteQuizProps {
   onSubmit: (preferences: TastePreferences) => void;
@@ -18,19 +18,38 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const { toast } = useToast();
   const [roastLevel, setRoastLevel] = useState("");
   const [flavors, setFlavors] = useState<string[]>([]);
-  const [brewingMethod, setBrewingMethod] = useState("");
+  const [brewingMethod, setBrewingMethod] = useState<string[]>([]);
   const [budget, setBudget] = useState("");
+  const [milkPreference, setMilkPreference] = useState("");
 
   const flavorOptions = [
-    "Fruity", "Nutty", "Chocolatey", "Earthy", "Bright", "Wild", "Caramel"
+    "Fruity", "Nutty", "Chocolatey", "Earthy", "Bright", "Wild", "Caramel",
+    "Floral", "Citrusy", "Berry-like", "Vanilla", "Spicy", "Smoky", "Honey",
+    "Wine-like", "Tropical", "Creamy", "Bold"
   ];
 
   const brewingMethods = [
-    "V60", "Aeropress", "Espresso", "Moka", "French Press", "Chemex"
+    { name: "V60", description: "Pour-over method that highlights bright, clean flavors and acidity" },
+    { name: "Aeropress", description: "Versatile brewing method producing clean, full-bodied coffee" },
+    { name: "Espresso", description: "Concentrated coffee with rich crema, perfect for milk drinks" },
+    { name: "Moka", description: "Stovetop brewing creating strong, concentrated coffee with bold flavors" },
+    { name: "French Press", description: "Full immersion brewing for rich, heavy-bodied coffee with oils" },
+    { name: "Chemex", description: "Clean, bright cup with paper filter removing oils and sediment" },
+    { name: "Cold Brew", description: "Smooth, low-acid coffee brewed with cold water over time" },
+    { name: "Turkish", description: "Traditional method creating thick, strong coffee with fine grounds" }
   ];
 
   const budgetOptions = [
     "$10-15 per bag", "$15-25 per bag", "$25-35 per bag", "$35+ per bag"
+  ];
+
+  const milkOptions = [
+    { value: "black", label: "Black coffee only" },
+    { value: "milk", label: "With dairy milk" },
+    { value: "plant", label: "With plant-based milk (oat, almond, etc.)" },
+    { value: "cream", label: "With cream or half-and-half" },
+    { value: "sweetened", label: "With sugar, honey, or syrups" },
+    { value: "mixed", label: "I enjoy it both black and with additions" }
   ];
 
   const handleFlavorToggle = (flavor: string) => {
@@ -41,11 +60,19 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     );
   };
 
+  const handleBrewingMethodToggle = (method: string) => {
+    setBrewingMethod(prev => 
+      prev.includes(method) 
+        ? prev.filter(m => m !== method)
+        : [...prev, method]
+    );
+  };
+
   const handleSubmit = () => {
-    if (!roastLevel || flavors.length === 0 || !brewingMethod || !budget) {
+    if (flavors.length === 0 || !budget || !milkPreference) {
       toast({
-        title: "Please complete all fields",
-        description: "We need all your preferences to find the perfect coffee match!",
+        title: "Please complete required fields",
+        description: "We need your flavor preferences, budget, and milk preference to find the perfect match!",
         variant: "destructive"
       });
       return;
@@ -54,8 +81,9 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     onSubmit({
       roastLevel,
       flavors,
-      brewingMethod,
-      budget
+      brewingMethod: brewingMethod.join(", "),
+      budget,
+      milkPreference
     });
 
     toast({
@@ -67,8 +95,9 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const handleReset = () => {
     setRoastLevel("");
     setFlavors([]);
-    setBrewingMethod("");
+    setBrewingMethod([]);
     setBudget("");
+    setMilkPreference("");
     onReset();
   };
 
@@ -79,15 +108,54 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
           ☕ Taste Quiz
         </CardTitle>
         <p className="text-amber-700 text-center">
-          Tell us about your coffee preferences
+          Tell us how you like your coffee to taste
         </p>
       </CardHeader>
       <CardContent className="p-6 space-y-8">
-        {/* Roast Level */}
+        {/* Flavors */}
         <div>
           <Label className="text-lg font-semibold text-amber-900 mb-4 block">
-            What roast level do you prefer?
+            What flavors do you enjoy? (Select all that apply) *
           </Label>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {flavorOptions.map((flavor) => (
+              <div key={flavor} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors">
+                <Checkbox
+                  id={flavor}
+                  checked={flavors.includes(flavor)}
+                  onCheckedChange={() => handleFlavorToggle(flavor)}
+                />
+                <Label htmlFor={flavor} className="cursor-pointer font-medium text-sm">
+                  {flavor}
+                </Label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Milk Preference */}
+        <div>
+          <Label className="text-lg font-semibold text-amber-900 mb-4 block">
+            How do you prefer to drink your coffee? *
+          </Label>
+          <RadioGroup value={milkPreference} onValueChange={setMilkPreference}>
+            {milkOptions.map((option) => (
+              <div key={option.value} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors">
+                <RadioGroupItem value={option.value} id={option.value} />
+                <Label htmlFor={option.value} className="flex-1 cursor-pointer font-medium">
+                  {option.label}
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </div>
+
+        {/* Roast Preference (Optional) */}
+        <div>
+          <Label className="text-lg font-semibold text-amber-900 mb-4 block">
+            Any roast preference? (Optional)
+          </Label>
+          <p className="text-sm text-amber-600 mb-3">We can recommend based on your taste preferences, but let us know if you have a preference:</p>
           <RadioGroup value={roastLevel} onValueChange={setRoastLevel}>
             <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors">
               <RadioGroupItem value="light" id="light" />
@@ -113,63 +181,53 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
           </RadioGroup>
         </div>
 
-        {/* Flavors */}
+        {/* Brewing Method (Optional, Multi-select) */}
         <div>
           <Label className="text-lg font-semibold text-amber-900 mb-4 block">
-            What flavors do you enjoy? (Select all that apply)
+            What brewing methods do you use? (Optional)
           </Label>
+          <p className="text-sm text-amber-600 mb-3">Select any methods you use or are interested in trying. Hover for details:</p>
           <div className="grid grid-cols-2 gap-3">
-            {flavorOptions.map((flavor) => (
-              <div key={flavor} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors">
-                <Checkbox
-                  id={flavor}
-                  checked={flavors.includes(flavor)}
-                  onCheckedChange={() => handleFlavorToggle(flavor)}
-                />
-                <Label htmlFor={flavor} className="cursor-pointer font-medium">
-                  {flavor}
-                </Label>
-              </div>
+            {brewingMethods.map((method) => (
+              <HoverCard key={method.name}>
+                <HoverCardTrigger asChild>
+                  <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors cursor-pointer border border-amber-100">
+                    <Checkbox
+                      id={method.name}
+                      checked={brewingMethod.includes(method.name)}
+                      onCheckedChange={() => handleBrewingMethodToggle(method.name)}
+                    />
+                    <Label htmlFor={method.name} className="cursor-pointer font-medium text-sm">
+                      {method.name}
+                    </Label>
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80 bg-white border-amber-200">
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-amber-900">{method.name}</h4>
+                    <p className="text-sm text-amber-700">{method.description}</p>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             ))}
           </div>
-        </div>
-
-        {/* Brewing Method */}
-        <div>
-          <Label className="text-lg font-semibold text-amber-900 mb-4 block">
-            What's your preferred brewing method?
-          </Label>
-          <Select value={brewingMethod} onValueChange={setBrewingMethod}>
-            <SelectTrigger className="w-full border-amber-200 focus:border-amber-400">
-              <SelectValue placeholder="Choose your brewing method" />
-            </SelectTrigger>
-            <SelectContent>
-              {brewingMethods.map((method) => (
-                <SelectItem key={method} value={method}>
-                  {method}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
 
         {/* Budget */}
         <div>
           <Label className="text-lg font-semibold text-amber-900 mb-4 block">
-            What's your budget range?
+            What's your budget range? *
           </Label>
-          <Select value={budget} onValueChange={setBudget}>
-            <SelectTrigger className="w-full border-amber-200 focus:border-amber-400">
-              <SelectValue placeholder="Select your budget range" />
-            </SelectTrigger>
-            <SelectContent>
-              {budgetOptions.map((option) => (
-                <SelectItem key={option} value={option}>
+          <RadioGroup value={budget} onValueChange={setBudget}>
+            {budgetOptions.map((option) => (
+              <div key={option} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors">
+                <RadioGroupItem value={option} id={option} />
+                <Label htmlFor={option} className="cursor-pointer font-medium">
                   {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
         </div>
 
         {/* Buttons */}

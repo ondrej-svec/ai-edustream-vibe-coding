@@ -8,6 +8,7 @@ export interface TastePreferences {
   flavors: string[];
   brewingMethod: string;
   budget: string;
+  milkPreference?: string;
 }
 
 const Index = () => {
