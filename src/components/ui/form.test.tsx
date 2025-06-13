@@ -1,8 +1,8 @@
-import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/matchers';
 import { describe, it, expect } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from './form';
 import { Input } from './input';
 
@@ -10,11 +10,27 @@ describe('FormField', () => {
   it('renders label and shows error on submit if required', async () => {
     const Wrapper = () => {
       const methods = useForm({ defaultValues: { name: '' } });
+      const { control, register, unregister, handleSubmit, watch, setValue, getValues, reset, resetField, setError, clearErrors, setFocus, getFieldState, formState } = methods;
       return (
-        <Form {...methods}>
+        <Form
+          control={control}
+          register={register}
+          unregister={unregister}
+          handleSubmit={handleSubmit}
+          watch={watch}
+          setValue={setValue}
+          getValues={getValues}
+          reset={reset}
+          resetField={resetField}
+          setError={setError}
+          clearErrors={clearErrors}
+          setFocus={setFocus}
+          getFieldState={getFieldState}
+          formState={formState}
+        >
           <FormField
             name="name"
-            control={methods.control}
+            control={control}
             rules={{ required: 'Name is required' }}
             render={({ field }) => (
               <FormItem>
@@ -31,8 +47,10 @@ describe('FormField', () => {
       );
     };
     render(<Wrapper />);
-    expect(screen.getByText('Name')).toBeInTheDocument();
+    expect(screen.queryByText('Name')).not.toBeNull();
     fireEvent.click(screen.getByText('Submit'));
-    expect(await screen.findByText('Name is required')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Name is required')).not.toBeNull();
+    });
   });
 }); 

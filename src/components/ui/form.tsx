@@ -8,12 +8,44 @@ import {
   FieldValues,
   FormProvider,
   useFormContext,
+  UseFormReturn,
 } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
 
-const Form = FormProvider
+interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+  children: React.ReactNode;
+  // Accepts all react-hook-form methods
+  [key: string]: any;
+}
+
+const RHF_METHOD_KEYS = [
+  'control', 'register', 'unregister', 'handleSubmit', 'watch', 'setValue', 'getValues', 'reset', 'resetField', 'setError', 'clearErrors', 'setFocus', 'getFieldState', 'formState',
+];
+
+const Form = ({ children, onSubmit, ...props }: FormProps) => {
+  // Split props into RHF methods and DOM props
+  const rhfMethods: Record<string, any> = {};
+  const domProps: Record<string, any> = {};
+  Object.entries(props).forEach(([key, value]) => {
+    if (RHF_METHOD_KEYS.includes(key)) {
+      rhfMethods[key] = value;
+    } else {
+      domProps[key] = value;
+    }
+  });
+  return (
+    <FormProvider {...rhfMethods}>
+      <form
+        onSubmit={onSubmit || rhfMethods.handleSubmit?.(() => {})}
+        {...domProps}
+      >
+        {children}
+      </form>
+    </FormProvider>
+  );
+};
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
