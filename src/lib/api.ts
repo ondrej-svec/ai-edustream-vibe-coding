@@ -1,3 +1,6 @@
+import { logError } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+
 const BASE_URL =
   typeof process !== 'undefined' && process.env.NODE_ENV === 'test'
     ? 'http://localhost/api'
@@ -116,6 +119,8 @@ export async function apiGet<T>(endpoint: string, options: RequestOptions = {}):
     try {
       response = await withTimeout(fetch(url, init), timeout);
     } catch (err: any) {
+      logError(err);
+      toast({ title: "Network Error", description: err.message, variant: "destructive" });
       if (err.message === 'Request timed out') throw new TimeoutError(err.message);
       throw new NetworkError(err.message);
     }
@@ -123,7 +128,10 @@ export async function apiGet<T>(endpoint: string, options: RequestOptions = {}):
     if (!interceptedResponse.ok) {
       let errorData;
       try { errorData = await interceptedResponse.json(); } catch {}
-      throw new ApiError(`API error: ${interceptedResponse.status}`, interceptedResponse.status, errorData);
+      const apiError = new ApiError(`API error: ${interceptedResponse.status}`, interceptedResponse.status, errorData);
+      logError(apiError);
+      toast({ title: "API Error", description: apiError.message, variant: "destructive" });
+      throw apiError;
     }
     // Handle 204 No Content gracefully
     if (interceptedResponse.status === 204) return undefined as T;
@@ -152,6 +160,8 @@ export async function apiPost<T>(endpoint: string, data: any, options: RequestOp
     try {
       response = await withTimeout(fetch(url, init), timeout);
     } catch (err: any) {
+      logError(err);
+      toast({ title: "Network Error", description: err.message, variant: "destructive" });
       if (err.message === 'Request timed out') throw new TimeoutError(err.message);
       throw new NetworkError(err.message);
     }
@@ -159,7 +169,10 @@ export async function apiPost<T>(endpoint: string, data: any, options: RequestOp
     if (!interceptedResponse.ok) {
       let errorData;
       try { errorData = await interceptedResponse.json(); } catch {}
-      throw new ApiError(`API error: ${interceptedResponse.status}`, interceptedResponse.status, errorData);
+      const apiError = new ApiError(`API error: ${interceptedResponse.status}`, interceptedResponse.status, errorData);
+      logError(apiError);
+      toast({ title: "API Error", description: apiError.message, variant: "destructive" });
+      throw apiError;
     }
     // Handle 204 No Content gracefully
     if (interceptedResponse.status === 204) return undefined as T;

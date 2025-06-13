@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from 'react';
+import { logError } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 export interface ApiCallState<T, Args extends any[]> {
   data: T | null;
@@ -34,6 +36,8 @@ export function useApiCall<T, Args extends any[]>(
       return result;
     } catch (err) {
       setError(err instanceof Error ? err : new Error(String(err)));
+      logError(err);
+      toast({ title: "API Error", description: err instanceof Error ? err.message : String(err), variant: "destructive" });
     } finally {
       setLoading(false);
     }

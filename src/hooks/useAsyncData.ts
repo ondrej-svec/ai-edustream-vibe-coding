@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import { logError } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
 
 export interface AsyncDataState<T> {
   data: T | null;
@@ -29,7 +31,11 @@ export function useAsyncData<T>(asyncFn: () => Promise<T>, deps: any[] = []): As
         if (!cancelled) setData(result);
       })
       .catch((err) => {
-        if (!cancelled) setError(err instanceof Error ? err : new Error(String(err)));
+        if (!cancelled) {
+          setError(err instanceof Error ? err : new Error(String(err)));
+          logError(err);
+          toast({ title: "Async Error", description: err instanceof Error ? err.message : String(err), variant: "destructive" });
+        }
       })
       .finally(() => {
         if (!cancelled) setLoading(false);

@@ -1,4 +1,6 @@
 import React from 'react';
+import { toast } from "@/hooks/use-toast";
+import { logError } from "@/lib/utils";
 
 interface ErrorBoundaryProps {
   fallback?: React.ReactNode;
@@ -24,8 +26,8 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
-    // Optionally log error to an error reporting service
-    // console.error(error, info);
+    logError(error, info);
+    toast({ title: "Application Error", description: error.message, variant: "destructive" });
   }
 
   render() {
