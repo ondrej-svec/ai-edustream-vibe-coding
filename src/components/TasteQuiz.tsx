@@ -24,35 +24,37 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const [milkPreference, setMilkPreference] = useState("");
 
   const flavorOptions = [
-    { name: "Fruity", description: "Bright, fresh fruit notes like berries, stone fruits, or citrus" },
-    { name: "Nutty", description: "Rich, warm notes of almonds, hazelnuts, or walnuts" },
-    { name: "Chocolatey", description: "Deep cocoa, dark chocolate, or milk chocolate flavors" },
-    { name: "Earthy", description: "Grounded, soil-like notes with forest floor characteristics" },
-    { name: "Bright", description: "Vibrant acidity with lively, sparkling characteristics" },
-    { name: "Wild", description: "Unique, unconventional flavors that are bold and adventurous" },
-    { name: "Caramel", description: "Sweet, buttery caramel and toffee-like flavors" },
-    { name: "Floral", description: "Delicate flower notes like jasmine, lavender, or rose" },
-    { name: "Citrusy", description: "Zesty lemon, orange, or grapefruit characteristics" },
-    { name: "Berry-like", description: "Specific berry flavors like blueberry, raspberry, or blackberry" },
-    { name: "Vanilla", description: "Sweet, creamy vanilla bean and custard-like notes" },
-    { name: "Spicy", description: "Warm spices like cinnamon, clove, or black pepper" },
-    { name: "Smoky", description: "Rich, roasted flavors with hints of smoke and char" },
-    { name: "Honey", description: "Natural sweetness with floral honey characteristics" },
-    { name: "Wine-like", description: "Complex, fermented notes similar to red or white wine" },
-    { name: "Tropical", description: "Exotic fruit flavors like mango, pineapple, or coconut" },
-    { name: "Creamy", description: "Smooth, rich mouthfeel with buttery texture" },
-    { name: "Bold", description: "Strong, intense flavors with powerful presence" }
+    { name: "Fruity", description: "Bright, fresh fruit notes like berries, stone fruits, or citrus. These coffees often have a vibrant, juicy character that's reminiscent of biting into fresh fruit." },
+    { name: "Nutty", description: "Rich, warm notes of almonds, hazelnuts, or walnuts. These flavors provide a comforting, roasted character with hints of toasted nuts and oils." },
+    { name: "Chocolatey", description: "Deep cocoa, dark chocolate, or milk chocolate flavors. Ranges from bitter dark chocolate to sweet milk chocolate, often with creamy undertones." },
+    { name: "Earthy", description: "Grounded, soil-like notes with forest floor characteristics. Think of wet earth after rain, mushrooms, or the smell of a forest floor." },
+    { name: "Bright", description: "Vibrant acidity with lively, sparkling characteristics. These coffees wake up your palate with crisp, clean notes that cut through richness." },
+    { name: "Wild", description: "Unique, unconventional flavors that are bold and adventurous. These coffees have unexpected notes that challenge traditional coffee expectations." },
+    { name: "Caramel", description: "Sweet, buttery caramel and toffee-like flavors. Rich, golden sweetness reminiscent of burnt sugar, butterscotch, and smooth caramel candy." },
+    { name: "Floral", description: "Delicate flower notes like jasmine, lavender, or rose. Light, aromatic qualities that add elegance and perfume-like characteristics to the cup." },
+    { name: "Citrusy", description: "Zesty lemon, orange, or grapefruit characteristics. Bright, tangy notes that provide refreshing acidity and clean, crisp finishes." },
+    { name: "Berry-like", description: "Specific berry flavors like blueberry, raspberry, or blackberry. Sweet-tart fruit notes with jammy qualities and natural fruit sweetness." },
+    { name: "Vanilla", description: "Sweet, creamy vanilla bean and custard-like notes. Smooth, dessert-like qualities with warm, comforting sweetness and creamy texture." },
+    { name: "Spicy", description: "Warm spices like cinnamon, clove, or black pepper. Adds complexity with heating spices that create depth and interesting flavor layers." },
+    { name: "Smoky", description: "Rich, roasted flavors with hints of smoke and char. Deep, intense notes reminiscent of campfire, barbecue, or wood-fired roasting." },
+    { name: "Honey", description: "Natural sweetness with floral honey characteristics. Delicate, golden sweetness with subtle floral undertones and syrupy mouthfeel." },
+    { name: "Wine-like", description: "Complex, fermented notes similar to red or white wine. Sophisticated acidity and tannins with grape-like or wine barrel characteristics." },
+    { name: "Tropical", description: "Exotic fruit flavors like mango, pineapple, or coconut. Bright, sweet, and often juicy notes that transport you to tropical destinations." },
+    { name: "Creamy", description: "Smooth, rich mouthfeel with buttery texture. Full-bodied coffees with silky, velvety texture that coats the palate pleasantly." },
+    { name: "Bold", description: "Strong, intense flavors with powerful presence. High-impact coffees that make a statement with robust, uncompromising character." }
   ];
 
   const brewingMethods = [
-    { name: "V60", description: "Pour-over method that highlights bright, clean flavors and acidity" },
-    { name: "Aeropress", description: "Versatile brewing method producing clean, full-bodied coffee" },
-    { name: "Espresso", description: "Concentrated coffee with rich crema, perfect for milk drinks" },
-    { name: "Moka", description: "Stovetop brewing creating strong, concentrated coffee with bold flavors" },
-    { name: "French Press", description: "Full immersion brewing for rich, heavy-bodied coffee with oils" },
-    { name: "Chemex", description: "Clean, bright cup with paper filter removing oils and sediment" },
-    { name: "Cold Brew", description: "Smooth, low-acid coffee brewed with cold water over time" },
-    { name: "Turkish", description: "Traditional method creating thick, strong coffee with fine grounds" }
+    { name: "V60", description: "Pour-over method that highlights bright, clean flavors and acidity. Cone-shaped dripper with spiral ridges for even extraction." },
+    { name: "Aeropress", description: "Versatile brewing method producing clean, full-bodied coffee. Uses air pressure for quick extraction with minimal bitterness." },
+    { name: "Espresso", description: "Concentrated coffee with rich crema, perfect for milk drinks. High-pressure extraction creating intense, syrupy coffee base." },
+    { name: "Moka", description: "Stovetop brewing creating strong, concentrated coffee with bold flavors. Italian method producing coffee between espresso and drip." },
+    { name: "French Press", description: "Full immersion brewing for rich, heavy-bodied coffee with oils. Metal filter allows oils and fine particles for full flavor." },
+    { name: "Chemex", description: "Clean, bright cup with paper filter removing oils and sediment. Thick filter creates exceptionally clean, tea-like coffee." },
+    { name: "Cold Brew", description: "Smooth, low-acid coffee brewed with cold water over time. Extended steeping creates naturally sweet, smooth concentrate." },
+    { name: "Turkish", description: "Traditional method creating thick, strong coffee with fine grounds. Unfiltered brewing with coffee grounds remaining in cup." },
+    { name: "Pulsar", description: "Hybrid brewing method combining immersion and percolation. Unique dripper design for controlled water flow and even extraction." },
+    { name: "Hario Switch", description: "Immersion-dripper hybrid allowing control over brew time. Switch mechanism lets you control when coffee starts dripping." }
   ];
 
   const milkOptions = [
@@ -80,7 +82,6 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     );
   };
 
-  // Check if all required fields are filled
   const isFormValid = flavors.length > 0 && milkPreference !== "";
 
   const handleSubmit = () => {

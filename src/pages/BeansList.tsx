@@ -1,9 +1,18 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, ExternalLink } from "lucide-react";
+import { ArrowLeft, MapPin, ExternalLink, Coffee, Clock, Thermometer } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TastePreferences } from "@/pages/Index";
+import { Badge } from "@/components/ui/badge";
+
+interface Recipe {
+  grindSize: string;
+  coffeeRatio: string;
+  waterTemp: string;
+  brewTime: string;
+  steps: string[];
+}
 
 interface Coffee {
   id: string;
@@ -12,7 +21,8 @@ interface Coffee {
   country: string;
   roastLevel: string;
   flavorNotes: string[];
-  brewMethod: string;
+  recommendedBrewMethod: string;
+  recipe: Recipe;
   price: string;
   buyLink: string;
   shopName: string;
@@ -35,7 +45,21 @@ const BeansList = () => {
         country: "Ethiopia",
         roastLevel: "Light",
         flavorNotes: ["Fruity", "Bright", "Floral"],
-        brewMethod: "V60",
+        recommendedBrewMethod: "V60",
+        recipe: {
+          grindSize: "Medium-fine",
+          coffeeRatio: "1:16 (22g coffee : 350g water)",
+          waterTemp: "195°F (90°C)",
+          brewTime: "3-4 minutes",
+          steps: [
+            "Rinse filter with hot water",
+            "Add coffee and create small well in center",
+            "Start timer, pour 50g water in circular motion",
+            "Wait 30 seconds for bloom",
+            "Continue pouring in slow circles, finish by 2:30",
+            "Total brew time should be 3-4 minutes"
+          ]
+        },
         price: "$18",
         buyLink: "https://bluebottlecoffee.com",
         shopName: "Blue Bottle Coffee",
@@ -49,7 +73,21 @@ const BeansList = () => {
         country: "Guatemala", 
         roastLevel: "Medium",
         flavorNotes: ["Chocolatey", "Nutty", "Balanced"],
-        brewMethod: "French Press",
+        recommendedBrewMethod: "French Press",
+        recipe: {
+          grindSize: "Coarse",
+          coffeeRatio: "1:15 (30g coffee : 450g water)",
+          waterTemp: "200°F (93°C)",
+          brewTime: "4 minutes",
+          steps: [
+            "Heat water to 200°F",
+            "Add coarse ground coffee to press",
+            "Pour hot water over grounds",
+            "Stir gently and place lid (don't press yet)",
+            "Steep for 4 minutes",
+            "Press down slowly and serve immediately"
+          ]
+        },
         price: "$16",
         buyLink: "https://stumptowncoffee.com",
         shopName: "Stumptown Coffee Roasters",
@@ -63,7 +101,21 @@ const BeansList = () => {
         country: "Colombia",
         roastLevel: "Medium",
         flavorNotes: ["Caramel", "Nutty", "Smooth"],
-        brewMethod: "Aeropress",
+        recommendedBrewMethod: "Aeropress",
+        recipe: {
+          grindSize: "Medium-fine",
+          coffeeRatio: "1:16 (18g coffee : 290g water)",
+          waterTemp: "185°F (85°C)",
+          brewTime: "2 minutes",
+          steps: [
+            "Insert filter and rinse with hot water",
+            "Add coffee and level grounds",
+            "Pour water up to number 4, stir",
+            "Steep for 1 minute 30 seconds",
+            "Press down gently over 30 seconds",
+            "Dilute with hot water if needed"
+          ]
+        },
         price: "$19",
         buyLink: "https://counterculturecoffee.com",
         shopName: "Counter Culture Coffee",
@@ -76,8 +128,22 @@ const BeansList = () => {
         roaster: "Intelligentsia",
         country: "Indonesia",
         roastLevel: "Dark",
-        flavorNotes: ["Earthy", "Wild", "Full-bodied"],
-        brewMethod: "French Press",
+        flavorNotes: ["Earthy", "Wild", "Bold"],
+        recommendedBrewMethod: "French Press",
+        recipe: {
+          grindSize: "Coarse",
+          coffeeRatio: "1:14 (32g coffee : 450g water)",
+          waterTemp: "200°F (93°C)",
+          brewTime: "4 minutes",
+          steps: [
+            "Use coarse grind for earthy character",
+            "Heat water to 200°F",
+            "Add grounds and pour water in circular motion",
+            "Stir once and place lid",
+            "Steep for 4 minutes",
+            "Press slowly to extract full body"
+          ]
+        },
         price: "$17",
         buyLink: "https://intelligentsiacoffee.com",
         shopName: "Intelligentsia Coffee",
@@ -90,13 +156,55 @@ const BeansList = () => {
         roaster: "Ritual Coffee",
         country: "Kenya",
         roastLevel: "Light",
-        flavorNotes: ["Bright", "Fruity", "Wine-like"],
-        brewMethod: "Chemex",
+        flavorNotes: ["Bright", "Berry-like", "Wine-like"],
+        recommendedBrewMethod: "Chemex",
+        recipe: {
+          grindSize: "Medium-coarse",
+          coffeeRatio: "1:17 (25g coffee : 425g water)",
+          waterTemp: "195°F (90°C)",
+          brewTime: "4-5 minutes",
+          steps: [
+            "Rinse thick Chemex filter thoroughly",
+            "Add coffee and create small divot",
+            "Pour 50g water for 30-second bloom",
+            "Pour in slow spirals, staying in center",
+            "Finish pouring by 3:30, total time 4-5 minutes",
+            "Clean, bright cup showcasing berry notes"
+          ]
+        },
         price: "$22",
         buyLink: "https://ritualcoffee.com",
         shopName: "Ritual Coffee Roasters",
         shopLocation: "San Francisco, CA",
         whyPicked: "The bright acidity and complex fruit notes match your sophisticated palate.",
+      },
+      {
+        id: "6",
+        name: "Brazilian Cerrado",
+        roaster: "Counter Culture",
+        country: "Brazil",
+        roastLevel: "Medium",
+        flavorNotes: ["Chocolatey", "Nutty", "Creamy"],
+        recommendedBrewMethod: "Espresso",
+        recipe: {
+          grindSize: "Fine",
+          coffeeRatio: "1:2.5 (18g coffee : 45g yield)",
+          waterTemp: "200°F (93°C)",
+          brewTime: "25-30 seconds",
+          steps: [
+            "Use 18g finely ground coffee",
+            "Tamp evenly with 30lbs pressure",
+            "Extract 45g in 25-30 seconds",
+            "Look for honey-colored crema",
+            "Perfect for milk drinks",
+            "Adjust grind if extraction is off"
+          ]
+        },
+        price: "$20",
+        buyLink: "https://counterculturecoffee.com",
+        shopName: "Counter Culture Coffee",
+        shopLocation: "Durham, NC",
+        whyPicked: "Excellent for espresso and milk drinks with chocolate and nut characteristics.",
       }
     ];
 
@@ -133,7 +241,7 @@ const BeansList = () => {
               </Button>
               <div>
                 <h1 className="text-2xl font-semibold text-gray-900">Your Perfect Coffee Matches</h1>
-                <p className="text-sm text-gray-600">Curated based on your taste preferences</p>
+                <p className="text-sm text-gray-600">Curated beans with brewing recommendations</p>
               </div>
             </div>
           </div>
@@ -168,47 +276,80 @@ const BeansList = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {recommendations.map((coffee) => (
             <Card key={coffee.id} className="bg-white border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="pb-4">
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start mb-4">
                   <div>
-                    <CardTitle className="text-lg font-semibold text-gray-900">{coffee.name}</CardTitle>
+                    <CardTitle className="text-xl font-semibold text-gray-900">{coffee.name}</CardTitle>
                     <p className="text-sm text-gray-600">{coffee.roaster}</p>
                   </div>
-                  <span className="text-lg font-bold text-gray-900">{coffee.price}</span>
+                  <span className="text-xl font-bold text-gray-900">{coffee.price}</span>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
+                
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="flex justify-between">
                     <span className="text-gray-500">Origin:</span>
                     <span className="text-gray-900">{coffee.country}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between">
                     <span className="text-gray-500">Roast:</span>
                     <span className="text-gray-900">{coffee.roastLevel}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Best for:</span>
-                    <span className="text-gray-900">{coffee.brewMethod}</span>
-                  </div>
                 </div>
 
-                <div>
+                <div className="mt-4">
                   <p className="text-sm text-gray-500 mb-2">Flavor Notes:</p>
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap gap-2">
                     {coffee.flavorNotes.map((note) => (
-                      <span key={note} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full">
+                      <Badge key={note} variant="secondary" className="bg-gray-100 text-gray-700 text-xs">
                         {note}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                 </div>
+              </CardHeader>
 
-                <div className="bg-gray-50 p-3 rounded-lg">
+              <CardContent className="space-y-6">
+                <div className="bg-blue-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-700 italic">"{coffee.whyPicked}"</p>
+                </div>
+
+                {/* Recommended Brewing Method */}
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <div className="flex items-center space-x-2 mb-3">
+                    <Coffee className="h-5 w-5 text-green-600" />
+                    <h4 className="font-semibold text-green-800">Recommended: {coffee.recommendedBrewMethod}</h4>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-green-600 font-medium">Grind:</span>
+                      <span className="text-green-800">{coffee.recipe.grindSize}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-green-600 font-medium">Ratio:</span>
+                      <span className="text-green-800">{coffee.recipe.coffeeRatio}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Thermometer className="h-4 w-4 text-green-600" />
+                      <span className="text-green-800">{coffee.recipe.waterTemp}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Clock className="h-4 w-4 text-green-600" />
+                      <span className="text-green-800">{coffee.recipe.brewTime}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-medium text-green-800 mb-2">Brewing Steps:</p>
+                    <ol className="list-decimal list-inside space-y-1 text-xs text-green-700">
+                      {coffee.recipe.steps.map((step, index) => (
+                        <li key={index}>{step}</li>
+                      ))}
+                    </ol>
+                  </div>
                 </div>
 
                 <div className="space-y-3">
