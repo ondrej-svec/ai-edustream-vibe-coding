@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +9,7 @@ interface Coffee {
   country: string;
   roastLevel: string;
   flavorNotes: string[];
-  brewMethod: string;
+  recommendedBrewMethod: string;
   price: string;
   buyLink: string;
   whyPicked: string;
@@ -86,7 +85,7 @@ const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
         {/* Brew Method */}
         <div className="mb-4">
           <div className="text-sm font-semibold text-amber-900 mb-1">Best Brew Method:</div>
-          <div className="text-amber-700 font-medium">☕ {coffee.brewMethod}</div>
+          <div className="text-amber-700 font-medium">☕ {coffee.recommendedBrewMethod}</div>
         </div>
 
         {/* Why We Picked This */}

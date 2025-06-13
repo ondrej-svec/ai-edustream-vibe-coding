@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { TastePreferences } from "@/types/coffee";
 import { useToast } from "@/hooks/use-toast";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { VALIDATION, ERRORS, DEFAULTS } from "@/constants";
 
 interface TasteQuizProps {
   onSubmit: (preferences: TastePreferences) => void;
@@ -19,7 +20,7 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const [roastLevel, setRoastLevel] = useState("");
   const [flavors, setFlavors] = useState<string[]>([]);
   const [brewingMethod, setBrewingMethod] = useState<string[]>([]);
-  const [budgetRange, setBudgetRange] = useState([15, 25]);
+  const [budgetRange, setBudgetRange] = useState(DEFAULTS.BUDGET_RANGE);
   const [milkPreference, setMilkPreference] = useState("");
 
   const flavorOptions = [
@@ -86,8 +87,8 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const handleSubmit = () => {
     if (!isFormValid) {
       toast({
-        title: "Please complete required fields",
-        description: "We need your flavor preferences and milk preference to find the perfect match!",
+        title: ERRORS.REQUIRED_FIELD,
+        description: `${ERRORS.FLAVORS_REQUIRED} ${ERRORS.MILK_REQUIRED}`,
         variant: "destructive"
       });
       return;
@@ -111,7 +112,7 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     setRoastLevel("");
     setFlavors([]);
     setBrewingMethod([]);
-    setBudgetRange([15, 25]);
+    setBudgetRange(DEFAULTS.BUDGET_RANGE);
     setMilkPreference("");
     onReset();
   };
@@ -188,18 +189,18 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
               <Slider
                 value={budgetRange}
                 onValueChange={setBudgetRange}
-                max={50}
-                min={10}
-                step={5}
+                max={VALIDATION.BUDGET_MAX}
+                min={VALIDATION.BUDGET_MIN}
+                step={VALIDATION.BUDGET_STEP}
                 className="w-full"
               />
             </div>
             <div className="flex justify-between text-sm text-gray-600">
-              <span>$10</span>
+              <span>${VALIDATION.BUDGET_MIN}</span>
               <span className="font-medium text-gray-900">
                 ${budgetRange[0]} - ${budgetRange[1]} per bag
               </span>
-              <span>$50+</span>
+              <span>${VALIDATION.BUDGET_MAX}+</span>
             </div>
           </div>
         </div>

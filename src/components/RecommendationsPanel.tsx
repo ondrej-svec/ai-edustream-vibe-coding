@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TastePreferences } from "@/pages/Index";
 import CoffeeCard from "@/components/CoffeeCard";
-import { Coffee } from "@/types/coffee";
+import { Coffee, TastePreferences } from "@/types/coffee";
+import { UI, ERRORS, DEFAULTS } from "@/constants";
 
 interface RecommendationsPanelProps {
   preferences: TastePreferences;
@@ -94,13 +94,13 @@ const RecommendationsPanel = ({ preferences }: RecommendationsPanelProps) => {
   const recommendations = generateRecommendations(preferences);
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-amber-200 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-t-lg">
-        <CardTitle className="text-2xl text-amber-900 text-center">
-          🎯 Your Perfect Matches
+    <Card className={UI.CARD_CLASS}>
+      <CardHeader className={UI.CARD_HEADER_CLASS}>
+        <CardTitle className={UI.CARD_TITLE_CLASS}>
+          {UI.CARD_TITLE}
         </CardTitle>
-        <p className="text-amber-700 text-center">
-          Curated just for you based on your taste preferences
+        <p className={UI.CARD_SUBTITLE_CLASS}>
+          {UI.CARD_SUBTITLE}
         </p>
       </CardHeader>
       <CardContent className="p-6">
@@ -109,18 +109,16 @@ const RecommendationsPanel = ({ preferences }: RecommendationsPanelProps) => {
             <CoffeeCard key={coffee.id} coffee={coffee} />
           ))}
         </div>
-        
         {recommendations.length === 0 && (
           <div className="text-center py-8">
-            <div className="w-16 h-16 bg-amber-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span className="text-2xl">🔍</span>
+            <div className={UI.EMPTY_STATE_ICON_CLASS}>
+              <span className="text-2xl">{UI.EMPTY_STATE_ICON}</span>
             </div>
-            <h3 className="text-xl font-bold text-amber-900 mb-2">
-              Expanding Your Horizons
+            <h3 className={UI.EMPTY_STATE_TITLE_CLASS}>
+              {UI.EMPTY_STATE_TITLE}
             </h3>
-            <p className="text-amber-700">
-              We're finding some unique matches that might surprise you! 
-              Try adjusting your preferences to see more options.
+            <p className={UI.EMPTY_STATE_MESSAGE_CLASS}>
+              {UI.EMPTY_STATE_MESSAGE}
             </p>
           </div>
         )}

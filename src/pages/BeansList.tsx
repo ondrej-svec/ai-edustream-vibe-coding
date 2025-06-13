@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, MapPin, ExternalLink, Coffee as CoffeeIcon, Clock, Thermometer } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { TastePreferences } from "@/pages/Index";
 import { Badge } from "@/components/ui/badge";
-import { Coffee, Recipe } from "@/types/coffee";
+import { Coffee, Recipe, TastePreferences } from "@/types/coffee";
+import { UI, ERRORS, DEFAULTS } from "@/constants";
 
 const BeansList = () => {
   const navigate = useNavigate();
@@ -215,8 +215,8 @@ const BeansList = () => {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900">Your Perfect Coffee Matches</h1>
-                <p className="text-sm text-gray-600">Curated beans with brewing recommendations</p>
+                <h1 className="text-2xl font-semibold text-gray-900">{UI.CARD_TITLE}</h1>
+                <p className="text-sm text-gray-600">{UI.CARD_SUBTITLE}</p>
               </div>
             </div>
           </div>
@@ -348,15 +348,14 @@ const BeansList = () => {
 
         {recommendations.length === 0 && (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <span className="text-2xl">🔍</span>
+            <div className={UI.EMPTY_STATE_ICON_CLASS}>
+              <span className="text-2xl">{UI.EMPTY_STATE_ICON}</span>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Expanding Your Horizons
+            <h3 className={UI.EMPTY_STATE_TITLE_CLASS}>
+              {UI.EMPTY_STATE_TITLE}
             </h3>
-            <p className="text-gray-600">
-              We're finding some unique matches that might surprise you! 
-              Try adjusting your preferences to see more options.
+            <p className={UI.EMPTY_STATE_MESSAGE_CLASS}>
+              {UI.EMPTY_STATE_MESSAGE}
             </p>
           </div>
         )}

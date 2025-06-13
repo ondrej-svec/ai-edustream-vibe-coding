@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TasteQuiz from "@/components/TasteQuiz";
 import { TastePreferences } from "@/types/coffee";
+import { UI } from "@/constants";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -26,10 +27,10 @@ const Index = () => {
               <div className="w-10 h-10 bg-gray-900 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-lg">☕</span>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900">BrewMatch</h1>
+              <h1 className="text-3xl font-bold text-gray-900">{UI.APP_NAME ?? "BrewMatch"}</h1>
             </div>
             <p className="text-gray-600 font-medium">
-              Your AI-powered coffee matchmaker
+              {UI.APP_TAGLINE ?? "Your AI-powered coffee matchmaker"}
             </p>
           </div>
         </div>
@@ -57,8 +58,8 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 mt-20">
         <div className="max-w-4xl mx-auto px-4 py-8 text-center">
-          <p className="text-lg font-medium mb-2">BrewMatch</p>
-          <p className="text-gray-400">Connecting coffee lovers with their perfect beans</p>
+          <p className="text-lg font-medium mb-2">{UI.APP_NAME ?? "BrewMatch"}</p>
+          <p className="text-gray-400">{UI.FOOTER_TEXT ?? "Connecting coffee lovers with their perfect beans"}</p>
         </div>
       </footer>
     </div>
