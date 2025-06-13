@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,9 +22,24 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const [milkPreference, setMilkPreference] = useState("");
 
   const flavorOptions = [
-    "Fruity", "Nutty", "Chocolatey", "Earthy", "Bright", "Wild", "Caramel",
-    "Floral", "Citrusy", "Berry-like", "Vanilla", "Spicy", "Smoky", "Honey",
-    "Wine-like", "Tropical", "Creamy", "Bold"
+    { name: "Fruity", description: "Bright, fresh fruit notes like berries, stone fruits, or citrus" },
+    { name: "Nutty", description: "Rich, warm notes of almonds, hazelnuts, or walnuts" },
+    { name: "Chocolatey", description: "Deep cocoa, dark chocolate, or milk chocolate flavors" },
+    { name: "Earthy", description: "Grounded, soil-like notes with forest floor characteristics" },
+    { name: "Bright", description: "Vibrant acidity with lively, sparkling characteristics" },
+    { name: "Wild", description: "Unique, unconventional flavors that are bold and adventurous" },
+    { name: "Caramel", description: "Sweet, buttery caramel and toffee-like flavors" },
+    { name: "Floral", description: "Delicate flower notes like jasmine, lavender, or rose" },
+    { name: "Citrusy", description: "Zesty lemon, orange, or grapefruit characteristics" },
+    { name: "Berry-like", description: "Specific berry flavors like blueberry, raspberry, or blackberry" },
+    { name: "Vanilla", description: "Sweet, creamy vanilla bean and custard-like notes" },
+    { name: "Spicy", description: "Warm spices like cinnamon, clove, or black pepper" },
+    { name: "Smoky", description: "Rich, roasted flavors with hints of smoke and char" },
+    { name: "Honey", description: "Natural sweetness with floral honey characteristics" },
+    { name: "Wine-like", description: "Complex, fermented notes similar to red or white wine" },
+    { name: "Tropical", description: "Exotic fruit flavors like mango, pineapple, or coconut" },
+    { name: "Creamy", description: "Smooth, rich mouthfeel with buttery texture" },
+    { name: "Bold", description: "Strong, intense flavors with powerful presence" }
   ];
 
   const brewingMethods = [
@@ -119,16 +133,26 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
           </Label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {flavorOptions.map((flavor) => (
-              <div key={flavor} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors">
-                <Checkbox
-                  id={flavor}
-                  checked={flavors.includes(flavor)}
-                  onCheckedChange={() => handleFlavorToggle(flavor)}
-                />
-                <Label htmlFor={flavor} className="cursor-pointer font-medium text-sm">
-                  {flavor}
-                </Label>
-              </div>
+              <HoverCard key={flavor.name}>
+                <HoverCardTrigger asChild>
+                  <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-amber-50 transition-colors cursor-pointer border border-amber-100">
+                    <Checkbox
+                      id={flavor.name}
+                      checked={flavors.includes(flavor.name)}
+                      onCheckedChange={() => handleFlavorToggle(flavor.name)}
+                    />
+                    <Label htmlFor={flavor.name} className="cursor-pointer font-medium text-sm">
+                      {flavor.name}
+                    </Label>
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80 bg-white border-amber-200">
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold text-amber-900">{flavor.name}</h4>
+                    <p className="text-sm text-amber-700">{flavor.description}</p>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             ))}
           </div>
         </div>
