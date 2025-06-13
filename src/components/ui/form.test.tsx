@@ -12,22 +12,7 @@ describe('FormField', () => {
       const methods = useForm({ defaultValues: { name: '' } });
       const { control, register, unregister, handleSubmit, watch, setValue, getValues, reset, resetField, setError, clearErrors, setFocus, getFieldState, formState } = methods;
       return (
-        <Form
-          control={control}
-          register={register}
-          unregister={unregister}
-          handleSubmit={handleSubmit}
-          watch={watch}
-          setValue={setValue}
-          getValues={getValues}
-          reset={reset}
-          resetField={resetField}
-          setError={setError}
-          clearErrors={clearErrors}
-          setFocus={setFocus}
-          getFieldState={getFieldState}
-          formState={formState}
-        >
+        <Form form={methods}>
           <FormField
             name="name"
             control={control}

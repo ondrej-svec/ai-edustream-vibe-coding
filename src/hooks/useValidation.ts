@@ -3,7 +3,7 @@ import { ZodSchema, ZodError, ZodTypeAny } from 'zod';
 
 export type ValidationErrors<T> = Record<string, string | undefined>;
 
-export function useValidation<T extends Record<string, any>>(
+export function useValidation<T extends Record<string, unknown>>(
   schema: ZodSchema<T> | ZodTypeAny,
   initialValues: T
 ) {
@@ -37,18 +37,18 @@ export function useValidation<T extends Record<string, any>>(
 
   // Validate a single field
   const validateField = useCallback(
-    (field: keyof T, value: any): string | undefined => {
+    (field: keyof T, value: unknown): string | undefined => {
       try {
         // Validate by merging the field value into the current values
         schema.parse({ ...values, [field]: value });
-        setErrors((prev) => ({ ...(prev as any), [field]: undefined }));
+        setErrors((prev) => ({ ...(prev as unknown) as ValidationErrors<T>, [field]: undefined }));
         return undefined;
       } catch (err) {
         if (err instanceof ZodError) {
           // Find the error for this field
           const fieldError = err.errors.find((e) => e.path[0] === field);
           const message = fieldError?.message;
-          setErrors((prev) => ({ ...(prev as any), [field]: message }));
+          setErrors((prev) => ({ ...(prev as unknown) as ValidationErrors<T>, [field]: message }));
           return message;
         }
         return undefined;
@@ -59,7 +59,7 @@ export function useValidation<T extends Record<string, any>>(
 
   // Handle field change
   const handleChange = useCallback(
-    (field: keyof T, value: any) => {
+    (field: keyof T, value: unknown) => {
       setValues((prev) => ({ ...prev, [field]: value }));
       setTouched((prev) => ({ ...prev, [field]: true }));
       validateField(field, value);

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { logError } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 
-export interface ApiCallState<T, Args extends any[]> {
+export interface ApiCallState<T, Args extends unknown[]> {
   data: T | null;
   loading: boolean;
   error: Error | null;
@@ -15,7 +15,7 @@ export interface ApiCallState<T, Args extends any[]> {
  * @param apiFn - The async API function to call
  * @param immediate - If true, call immediately on mount (default: false)
  */
-export function useApiCall<T, Args extends any[]>(
+export function useApiCall<T, Args extends unknown[]>(
   apiFn: (...args: Args) => Promise<T>,
   immediate: boolean = false,
   initialArgs?: Args
@@ -34,7 +34,7 @@ export function useApiCall<T, Args extends any[]>(
       const result = await apiFn(...args);
       setData(result);
       return result;
-    } catch (err) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err : new Error(String(err)));
       logError(err);
       toast({ title: "API Error", description: err instanceof Error ? err.message : String(err), variant: "destructive" });

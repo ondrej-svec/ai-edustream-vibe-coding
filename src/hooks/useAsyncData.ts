@@ -14,7 +14,7 @@ export interface AsyncDataState<T> {
  * @param asyncFn - The async function to execute (should return a Promise)
  * @param deps - Dependency array for re-running the async function
  */
-export function useAsyncData<T>(asyncFn: () => Promise<T>, deps: any[] = []): AsyncDataState<T> {
+export function useAsyncData<T>(asyncFn: () => Promise<T>, deps: ReadonlyArray<unknown> = []): AsyncDataState<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -30,7 +30,7 @@ export function useAsyncData<T>(asyncFn: () => Promise<T>, deps: any[] = []): As
       .then((result) => {
         if (!cancelled) setData(result);
       })
-      .catch((err) => {
+      .catch((err: unknown) => {
         if (!cancelled) {
           setError(err instanceof Error ? err : new Error(String(err)));
           logError(err);

@@ -13,50 +13,25 @@ import {
 
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
+import { RHF_METHOD_KEYS } from "./form.helpers"
 
-interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+interface FormProps<TFieldValues extends FieldValues = FieldValues> extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
-  // Accepts all react-hook-form methods
-  [key: string]: any;
+  form: UseFormReturn<TFieldValues>;
 }
 
-const RHF_METHOD_KEYS = [
-  'control', 'register', 'unregister', 'handleSubmit', 'watch', 'setValue', 'getValues', 'reset', 'resetField', 'setError', 'clearErrors', 'setFocus', 'getFieldState', 'formState',
-];
-
-const Form = ({ children, onSubmit, ...props }: FormProps) => {
-  // Split props into RHF methods and DOM props
-  const rhfMethods: Record<string, any> = {};
-  const domProps: Record<string, any> = {};
-  Object.entries(props).forEach(([key, value]) => {
-    if (RHF_METHOD_KEYS.includes(key)) {
-      rhfMethods[key] = value;
-    } else {
-      domProps[key] = value;
-    }
-  });
+const Form = <TFieldValues extends FieldValues = FieldValues>({ children, form, onSubmit, ...props }: FormProps<TFieldValues>) => {
   return (
-    <FormProvider {...rhfMethods}>
+    <FormProvider {...form}>
       <form
-        onSubmit={onSubmit || rhfMethods.handleSubmit?.(() => {})}
-        {...domProps}
+        onSubmit={onSubmit || form.handleSubmit(() => {})}
+        {...props}
       >
         {children}
       </form>
     </FormProvider>
   );
 };
-
-type FormFieldContextValue<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
-> = {
-  name: TName
-}
-
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-)
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -195,6 +170,19 @@ const FormMessage = React.forwardRef<
   )
 })
 FormMessage.displayName = "FormMessage"
+
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+  name: TName
+}
+
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+  {} as FormFieldContextValue
+)
+
+export { FormProvider, useFormContext };
 
 export {
   useFormField,

@@ -61,7 +61,7 @@ async function applyResponseInterceptors(response: Response): Promise<Response> 
  * Custom error types for API utility
  */
 export class ApiError extends Error {
-  constructor(message: string, public status?: number, public data?: any) {
+  constructor(message: string, public status?: number, public data?: unknown) {
     super(message);
     this.name = 'ApiError';
   }
@@ -86,7 +86,7 @@ export class TimeoutError extends Error {
  */
 async function retryWithBackoff<T>(fn: () => Promise<T>, retries = 3, delay = 300, factor = 2): Promise<T> {
   let attempt = 0;
-  let lastError: any;
+  let lastError: unknown;
   while (attempt < retries) {
     try {
       return await fn();
@@ -118,16 +118,16 @@ export async function apiGet<T>(endpoint: string, options: RequestOptions = {}):
     let response: Response;
     try {
       response = await withTimeout(fetch(url, init), timeout);
-    } catch (err: any) {
+    } catch (err: unknown) {
       logError(err);
-      toast({ title: "Network Error", description: err.message, variant: "destructive" });
-      if (err.message === 'Request timed out') throw new TimeoutError(err.message);
-      throw new NetworkError(err.message);
+      toast({ title: "Network Error", description: err instanceof Error ? err.message : String(err), variant: "destructive" });
+      if (err instanceof Error && err.message === 'Request timed out') throw new TimeoutError(err.message);
+      throw new NetworkError(err instanceof Error ? err.message : String(err));
     }
     const interceptedResponse = await applyResponseInterceptors(response);
     if (!interceptedResponse.ok) {
       let errorData;
-      try { errorData = await interceptedResponse.json(); } catch {}
+      try { errorData = await interceptedResponse.json(); } catch { /* empty */ }
       const apiError = new ApiError(`API error: ${interceptedResponse.status}`, interceptedResponse.status, errorData);
       logError(apiError);
       toast({ title: "API Error", description: apiError.message, variant: "destructive" });
@@ -142,7 +142,7 @@ export async function apiGet<T>(endpoint: string, options: RequestOptions = {}):
 /**
  * POST request with retry and improved error handling
  */
-export async function apiPost<T>(endpoint: string, data: any, options: RequestOptions = {}): Promise<T> {
+export async function apiPost<T>(endpoint: string, data: unknown, options: RequestOptions = {}): Promise<T> {
   return retryWithBackoff(async () => {
     let url: RequestInfo = `${BASE_URL}${endpoint}`;
     let init: RequestInit = {
@@ -159,16 +159,16 @@ export async function apiPost<T>(endpoint: string, data: any, options: RequestOp
     let response: Response;
     try {
       response = await withTimeout(fetch(url, init), timeout);
-    } catch (err: any) {
+    } catch (err: unknown) {
       logError(err);
-      toast({ title: "Network Error", description: err.message, variant: "destructive" });
-      if (err.message === 'Request timed out') throw new TimeoutError(err.message);
-      throw new NetworkError(err.message);
+      toast({ title: "Network Error", description: err instanceof Error ? err.message : String(err), variant: "destructive" });
+      if (err instanceof Error && err.message === 'Request timed out') throw new TimeoutError(err.message);
+      throw new NetworkError(err instanceof Error ? err.message : String(err));
     }
     const interceptedResponse = await applyResponseInterceptors(response);
     if (!interceptedResponse.ok) {
       let errorData;
-      try { errorData = await interceptedResponse.json(); } catch {}
+      try { errorData = await interceptedResponse.json(); } catch { /* empty */ }
       const apiError = new ApiError(`API error: ${interceptedResponse.status}`, interceptedResponse.status, errorData);
       logError(apiError);
       toast({ title: "API Error", description: apiError.message, variant: "destructive" });
