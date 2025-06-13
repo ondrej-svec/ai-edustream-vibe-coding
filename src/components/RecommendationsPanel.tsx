@@ -1,21 +1,7 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TastePreferences } from "@/pages/Index";
 import CoffeeCard from "@/components/CoffeeCard";
-
-interface Coffee {
-  id: string;
-  name: string;
-  roaster: string;
-  country: string;
-  roastLevel: string;
-  flavorNotes: string[];
-  brewMethod: string;
-  price: string;
-  buyLink: string;
-  whyPicked: string;
-  image?: string;
-}
+import { Coffee } from "@/types/coffee";
 
 interface RecommendationsPanelProps {
   preferences: TastePreferences;
@@ -32,7 +18,7 @@ const RecommendationsPanel = ({ preferences }: RecommendationsPanelProps) => {
         country: "Ethiopia",
         roastLevel: "Light",
         flavorNotes: ["Fruity", "Bright", "Floral"],
-        brewMethod: "V60",
+        recommendedBrewMethod: "V60",
         price: "$18",
         buyLink: "#",
         whyPicked: "Your love for bright, fruity flavors makes this Ethiopian single-origin perfect for you.",
@@ -44,7 +30,7 @@ const RecommendationsPanel = ({ preferences }: RecommendationsPanelProps) => {
         country: "Guatemala", 
         roastLevel: "Medium",
         flavorNotes: ["Chocolatey", "Nutty", "Balanced"],
-        brewMethod: "French Press",
+        recommendedBrewMethod: "French Press",
         price: "$16",
         buyLink: "#",
         whyPicked: "This medium roast balances richness with the nutty notes you enjoy.",
@@ -56,7 +42,7 @@ const RecommendationsPanel = ({ preferences }: RecommendationsPanelProps) => {
         country: "Colombia",
         roastLevel: "Medium",
         flavorNotes: ["Caramel", "Nutty", "Smooth"],
-        brewMethod: "Aeropress",
+        recommendedBrewMethod: "Aeropress",
         price: "$19",
         buyLink: "#",
         whyPicked: "The caramel sweetness and smooth body align perfectly with your preferences.",
@@ -68,7 +54,7 @@ const RecommendationsPanel = ({ preferences }: RecommendationsPanelProps) => {
         country: "Indonesia",
         roastLevel: "Dark",
         flavorNotes: ["Earthy", "Wild", "Full-bodied"],
-        brewMethod: "French Press",
+        recommendedBrewMethod: "French Press",
         price: "$17",
         buyLink: "#",
         whyPicked: "For those seeking adventure - this wild, earthy profile will surprise and delight.",
@@ -80,7 +66,7 @@ const RecommendationsPanel = ({ preferences }: RecommendationsPanelProps) => {
         country: "Kenya",
         roastLevel: "Light",
         flavorNotes: ["Bright", "Fruity", "Wine-like"],
-        brewMethod: "Chemex",
+        recommendedBrewMethod: "Chemex",
         price: "$22",
         buyLink: "#",
         whyPicked: "The bright acidity and complex fruit notes match your sophisticated palate.",

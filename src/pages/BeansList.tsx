@@ -1,35 +1,10 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, ExternalLink, Coffee, Clock, Thermometer } from "lucide-react";
+import { ArrowLeft, MapPin, ExternalLink, Coffee as CoffeeIcon, Clock, Thermometer } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TastePreferences } from "@/pages/Index";
 import { Badge } from "@/components/ui/badge";
-
-interface Recipe {
-  grindSize: string;
-  coffeeRatio: string;
-  waterTemp: string;
-  brewTime: string;
-  steps: string[];
-}
-
-interface Coffee {
-  id: string;
-  name: string;
-  roaster: string;
-  country: string;
-  roastLevel: string;
-  flavorNotes: string[];
-  recommendedBrewMethod: string;
-  recipe: Recipe;
-  price: string;
-  buyLink: string;
-  shopName: string;
-  shopLocation: string;
-  whyPicked: string;
-  image?: string;
-}
+import { Coffee, Recipe } from "@/types/coffee";
 
 const BeansList = () => {
   const navigate = useNavigate();
@@ -319,7 +294,7 @@ const BeansList = () => {
                 {/* Recommended Brewing Method */}
                 <div className="bg-green-50 p-4 rounded-lg">
                   <div className="flex items-center space-x-2 mb-3">
-                    <Coffee className="h-5 w-5 text-green-600" />
+                    <CoffeeIcon className="h-5 w-5 text-green-600" />
                     <h4 className="font-semibold text-green-800">Recommended: {coffee.recommendedBrewMethod}</h4>
                   </div>
                   

@@ -1,15 +1,7 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TasteQuiz from "@/components/TasteQuiz";
-
-export interface TastePreferences {
-  roastLevel: string;
-  flavors: string[];
-  brewingMethod: string;
-  budget: string;
-  milkPreference?: string;
-}
+import { TastePreferences } from "@/types/coffee";
 
 const Index = () => {
   const navigate = useNavigate();
