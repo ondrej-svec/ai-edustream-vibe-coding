@@ -1,73 +1,69 @@
-# Welcome to your Lovable project
+# AI EduStream Vibe Coding
 
-## Project info
+## Overview
+AI EduStream Vibe Coding is a modern educational platform and coding environment designed for interactive learning, code experimentation, and rapid prototyping. It features a custom UI component library, robust validation, API integration, and comprehensive testing.
 
-**URL**: https://lovable.dev/projects/bcf100ba-886d-49fa-9a27-67bebaf68160
+## Features
+- Custom UI component library (Radix UI + Tailwind)
+- Centralized type and constant management
+- Abstracted data service layer
+- Comprehensive input validation
+- Secure HTML rendering (DOMPurify)
+- Loading and error state management
+- Real API integration (no mock data)
+- Full test suite (unit, integration, E2E)
+- Automated security and CI/CD integration
 
-## How can I edit this code?
+## Prerequisites
+- Node.js (v18+ recommended)
+- npm (v9+ recommended)
+- Git
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/bcf100ba-886d-49fa-9a27-67bebaf68160) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
+## Installation
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+git clone <repo-url>
+cd ai-edustream-vibe-coding
+npm install
 ```
 
-**Edit a file directly in GitHub**
+## Configuration
+- Copy `.env.example` to `.env` and fill in required values (API keys, endpoints, etc.)
+- See `package.json` scripts for available commands
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Usage
+- **Development server:**
+  ```sh
+  npm run dev
+  # App runs at http://localhost:8080
+  ```
+- **Run tests:**
+  ```sh
+  npm test
+  # or
+  npx vitest run
+  ```
+- **Run E2E tests:**
+  ```sh
+  npx playwright test
+  ```
+- **Build for production:**
+  ```sh
+  npm run build
+  ```
 
-**Use GitHub Codespaces**
+## Contribution Guidelines
+- Fork the repo and create a feature branch
+- Write clear, focused commits
+- Add/maintain tests for new features
+- Follow code style and linting rules
+- Document new components/APIs
+- Open a pull request with a clear description
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Troubleshooting
+- If dependencies fail to install, ensure Node/npm versions are up to date
+- For test failures, run `npm run lint` and check for code style issues
+- If the dev server fails to start, check `.env` configuration
+- For Playwright E2E issues, ensure the dev server is running on port 8080
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/bcf100ba-886d-49fa-9a27-67bebaf68160) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## License
+MIT

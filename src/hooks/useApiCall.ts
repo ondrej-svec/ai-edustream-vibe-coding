@@ -11,9 +11,10 @@ export interface ApiCallState<T, Args extends unknown[]> {
 }
 
 /**
- * useApiCall - React hook for managing API calls with loading, error, and retry state.
- * @param apiFn - The async API function to call
- * @param immediate - If true, call immediately on mount (default: false)
+ * Custom React hook for making API calls with loading, error, and retry state management.
+ * @param apiFn - The API function to call.
+ * @param args - Arguments to pass to the API function.
+ * @returns An object containing data, loading, error, and a retry function.
  */
 export function useApiCall<T, Args extends unknown[]>(
   apiFn: (...args: Args) => Promise<T>,

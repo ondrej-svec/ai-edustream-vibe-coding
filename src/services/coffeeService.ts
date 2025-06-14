@@ -2,6 +2,10 @@ import { UserPreferences, MatchResponse, ErrorResponse } from '@/types/coffee-ap
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
+/**
+ * Fetches a list of available coffee types from the API.
+ * @returns A promise resolving to an array of coffee type objects.
+ */
 export async function matchCoffee(preferences: UserPreferences): Promise<MatchResponse> {
   const response = await fetch(`${API_URL}/api/match`, {
     method: 'POST',
@@ -43,6 +47,11 @@ export async function mockMatchCoffee(preferences: UserPreferences): Promise<Mat
   };
 }
 
+/**
+ * Submits a coffee taste quiz and returns the best match from the API.
+ * @param quizData - The user's quiz answers.
+ * @returns A promise resolving to the matched coffee result.
+ */
 // Export the real or mock service based on env
 export const coffeeService =
   API_URL && !API_URL.includes('mock') ? { matchCoffee } : { matchCoffee: mockMatchCoffee }; 

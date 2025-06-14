@@ -101,7 +101,10 @@ async function retryWithBackoff<T>(fn: () => Promise<T>, retries = 3, delay = 30
 }
 
 /**
- * GET request with retry and improved error handling
+ * Performs a GET request to the given URL and returns the parsed JSON response.
+ * @param url - The endpoint URL.
+ * @param options - Optional fetch options.
+ * @returns A promise resolving to the response data.
  */
 export async function apiGet<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
   return retryWithBackoff(async () => {
@@ -140,7 +143,11 @@ export async function apiGet<T>(endpoint: string, options: RequestOptions = {}):
 }
 
 /**
- * POST request with retry and improved error handling
+ * Performs a POST request to the given URL with the provided data and returns the parsed JSON response.
+ * @param url - The endpoint URL.
+ * @param data - The data to send in the request body.
+ * @param options - Optional fetch options.
+ * @returns A promise resolving to the response data.
  */
 export async function apiPost<T>(endpoint: string, data: unknown, options: RequestOptions = {}): Promise<T> {
   return retryWithBackoff(async () => {
