@@ -93,7 +93,6 @@
     "eslint-plugin-storybook": "^9.0.9",
     "globals": "^15.9.0",
     "jsdom": "^26.1.0",
-    "lovable-tagger": "^1.1.7",
     "msw": "^2.10.2",
     "playwright": "^1.53.0",
     "postcss": "^8.4.47",
