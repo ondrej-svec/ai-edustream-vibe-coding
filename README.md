@@ -1,57 +1,77 @@
-# AI EduStream Vibe Coding
+# ☕ AI EduStream Vibe Coding
 
 ## Overview
-AI EduStream Vibe Coding is a modern educational platform and coding environment designed for interactive learning, code experimentation, and rapid prototyping. It features a **Magic UI-inspired design system**, robust validation, API integration, and comprehensive testing.
+AI EduStream Vibe Coding is a modern **coffee matching application** that helps users discover their perfect coffee based on taste preferences. Built with React, TypeScript, and a Magic UI-inspired design system, it features intelligent coffee recommendations, geographic roaster filtering, and a clean, responsive interface.
 
-## ✨ Recent Updates - Magic UI Redesign
-This application has been completely redesigned to match the modern, elegant aesthetic of Magic UI Agent. Key improvements include:
+## ✨ Recent Updates - Codebase Optimization & Magic UI Redesign
 
-- **🎨 Modern Design System**: Magic UI-inspired color palette with blue/purple gradients
+### 🧹 **Major Cleanup (Latest)**
+- **43% CSS Bundle Reduction**: Removed 25+ unused UI components (62.63 kB → 35.72 kB)
+- **Lean Component Library**: Only 6 actively used components remain
+- **Clean Architecture**: Removed obsolete files, optimized imports, fixed lint issues
+- **Updated Documentation**: DESIGN_SYSTEM.md now accurately reflects current components
+
+### 🎨 **Magic UI Redesign**
+- **Modern Design System**: Magic UI-inspired color palette with blue/purple gradients
 - **📱 Mobile-First Responsive Design**: Optimized for all screen sizes with 44px touch targets
 - **🎯 Enhanced UX**: Improved typography, spacing, and interactive elements
 - **⚡ Performance Optimized**: Clean, efficient component architecture
 - **♿ Accessibility Focused**: WCAG compliant with proper focus states and keyboard navigation
 
-## Features
-- **Magic UI-inspired component library** (Tailwind CSS + Custom Variants)
-- Centralized type and constant management
-- Abstracted data service layer
-- Comprehensive input validation
-- Secure HTML rendering (DOMPurify)
-- Loading and error state management
-- Real API integration (no mock data)
-- Full test suite (unit, integration, E2E)
-- **Responsive design system** with custom breakpoints
+## 🚀 Features
+
+### ☕ **Coffee Matching**
+- **Intelligent Taste Quiz**: Multi-step questionnaire to determine coffee preferences
+- **Geographic Filtering**: Find roasters by continent and country
+- **Personalized Recommendations**: AI-powered coffee matching based on taste profile
+- **Real-time API Integration**: Live coffee data from backend service
+
+### 🎨 **Design & UX**
+- **Magic UI-inspired component library** (6 optimized components)
+- **Responsive design system** with 7 custom breakpoints (xs to 3xl)
 - **Modern gradient styling** and enhanced visual hierarchy
+- **Mobile-first approach** with 44px touch targets
+- **Accessibility focused** (WCAG compliant)
 
-## Design System
-Our design system is built on Magic UI principles:
+### 🛠️ **Technical**
+- **React 18** with TypeScript for type safety
+- **Tailwind CSS** with custom design tokens
+- **React Query** for efficient data fetching
+- **React Router** for navigation
+- **Comprehensive testing** (Vitest + Playwright)
+- **Clean architecture** with abstracted service layer
+- **Optimized bundle size** (43% CSS reduction)
 
-### Color Palette
+## 🎨 Design System
+
+Our lean, optimized design system is built on Magic UI principles with **6 core components**:
+
+### 📦 **Available Components**
+1. **Button** - Primary interactive element with gradient variants
+2. **Badge** - Status indicators and labels
+3. **Card** - Content container component
+4. **Input** - Form input fields with validation states
+5. **Toaster/Sonner** - Toast notification system
+6. **Error Boundary** - Error handling wrapper
+
+### 🎨 **Visual Design**
 - **Primary**: Blue gradient (`from-blue-600 to-purple-600`)
 - **Accent**: Purple gradient (`from-purple-500 to-pink-500`)
-- **Modern neutrals**: Carefully selected grays for optimal contrast
+- **Typography**: Inter (body) + Nunito Sans (headings)
+- **Rounded corners**: 0.75rem default for modern feel
 
-### Typography
-- **Primary Font**: Inter (clean, modern sans-serif)
-- **Heading Font**: Nunito Sans (friendly, approachable)
-- **Responsive scaling**: Mobile-first typography that scales beautifully
+### 📱 **Responsive Breakpoints**
+```javascript
+xs: 480px   // Extra small devices (large phones)
+sm: 600px   // Small devices (tablets)
+md: 768px   // Medium devices (small laptops)
+lg: 1024px  // Large devices (laptops)
+xl: 1280px  // Extra large devices (desktops)
+2xl: 1440px // 2K displays
+3xl: 1600px // Large displays
+```
 
-### Responsive Breakpoints
-- `xs`: 480px (Extra small devices)
-- `sm`: 600px (Small devices)
-- `md`: 768px (Medium devices)
-- `lg`: 1024px (Large devices)
-- `xl`: 1280px (Extra large devices)
-- `2xl`: 1440px (2K displays)
-- `3xl`: 1600px (Large displays)
-
-### Component Variants
-All components feature Magic UI-inspired styling:
-- **Gradient backgrounds** for primary actions
-- **Rounded corners** (0.75rem default)
-- **Enhanced shadows** and hover effects
-- **Smooth transitions** for all interactions
+For complete design system documentation, see [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md).
 
 ## Prerequisites
 - Node.js (v18+ recommended)

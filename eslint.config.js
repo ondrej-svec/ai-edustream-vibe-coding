@@ -8,12 +8,14 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
+    ignores: ["dist/**/*", "build/**/*", "coverage/**/*", "node_modules/**/*"],
+  },
+  {
     ...js.configs.recommended,
   },
   ...tseslint.configs.recommended,
   {
     files: ["**/*.{ts,tsx}"],
-    ignores: ["dist"],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,

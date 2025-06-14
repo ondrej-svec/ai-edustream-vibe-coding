@@ -52,7 +52,6 @@ export function useApiCall<T, Args extends unknown[]>(
   }, [call, lastArgs]);
 
   // Optionally call immediately on mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => {
     if (immediate && initialArgs) {
       call(...initialArgs);

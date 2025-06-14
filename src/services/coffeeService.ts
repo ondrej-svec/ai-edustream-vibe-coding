@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL || '';
  * @returns A promise resolving to an array of coffee type objects.
  */
 export async function matchCoffee(preferences: UserPreferences): Promise<MatchResponse> {
-  const fullUrl = `${API_URL}/match`;
+  const fullUrl = `${API_URL}/matching/match`;
   console.log("🌐 Making API request to:", fullUrl);
   console.log("📤 Request payload:", preferences);
   

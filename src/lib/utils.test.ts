@@ -12,7 +12,7 @@ vi.mock('dompurify', () => ({
 describe('cn', () => {
   it('merges class names correctly', () => {
     expect(cn('foo', 'bar')).toBe('foo bar');
-    expect(cn('foo', false && 'bar', undefined, 'baz')).toBe('foo baz');
+    expect(cn('foo', false && 'bar', undefined, 'baz')).toBe('foo baz'); // eslint-disable-line no-constant-binary-expression
     expect(cn('foo', 0, null, 'bar')).toBe('foo bar');
   });
 });

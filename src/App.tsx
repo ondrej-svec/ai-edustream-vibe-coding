@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -8,12 +9,11 @@ import BeansList from "./pages/BeansList";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import { toast } from "@/hooks/use-toast";
-import React from "react";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  React.useEffect(() => {
+  useEffect(() => {
     window.onerror = (message, source, lineno, colno, error) => {
       // Log to error reporting service here if needed
       console.error("Global error:", message, source, lineno, colno, error);

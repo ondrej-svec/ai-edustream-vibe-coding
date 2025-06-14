@@ -147,18 +147,42 @@ hover:bg-destructive/80
 text-foreground border border-input
 ```
 
-### Alert Variants
+### Input Variants
 
 #### Default
 ```css
-bg-gradient-to-r from-blue-50 to-purple-50 
-text-blue-900 border-blue-200
+h-12 px-3 py-2 rounded-lg border border-input 
+bg-background text-foreground
+focus:ring-2 focus:ring-ring focus:border-ring
+placeholder:text-muted-foreground
 ```
 
-#### Destructive
+#### Disabled
 ```css
-bg-gradient-to-r from-red-50 to-pink-50 
-text-red-900 border-red-200
+disabled:cursor-not-allowed disabled:opacity-50
+```
+
+### Toaster Variants
+
+#### Default Toast
+```css
+bg-background text-foreground border border-border
+shadow-lg rounded-lg
+```
+
+#### Success Toast
+```css
+bg-green-50 text-green-900 border-green-200
+```
+
+#### Error Toast
+```css
+bg-red-50 text-red-900 border-red-200
+```
+
+#### Warning Toast
+```css
+bg-yellow-50 text-yellow-900 border-yellow-200
 ```
 
 ## 📐 Spacing & Layout
@@ -210,18 +234,73 @@ transition-all duration-300 ease-in-out
 - ARIA labels provided where needed
 - Alternative text for all images
 
+## 📦 Available Components
+
+### Core UI Components
+The following components are currently available in the design system:
+
+- **Button** - Primary interactive element with multiple variants
+- **Badge** - Small status indicators and labels  
+- **Card** - Container component for content grouping
+- **Input** - Form input fields with validation states
+- **Toaster/Sonner** - Toast notification system
+- **Error Boundary** - Error handling wrapper component
+
+### Component Files
+```
+src/components/ui/
+├── badge.tsx           # Badge component
+├── button.tsx          # Button component  
+├── card.tsx            # Card container component
+├── input.tsx           # Input field component
+├── toaster.tsx         # Toast notification container
+├── sonner.tsx          # Sonner toast implementation
+├── error-boundary.tsx  # Error boundary wrapper
+└── use-toast.ts        # Toast hook utilities
+```
+
 ## 🧩 Component Usage Guidelines
 
-### Form Elements
+### Input Elements
 ```jsx
-// Responsive form layout
+// Responsive input layout
 <div className="space-y-6 sm:space-y-8">
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-    <input className="h-12 px-3 py-2 rounded-lg border border-gray-300 
-                     focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
-                     text-sm sm:text-base" />
+    <Input 
+      className="h-12 text-sm sm:text-base" 
+      placeholder="Enter your text..."
+    />
   </div>
 </div>
+```
+
+### Error Boundary
+```jsx
+// Wrap your app or components with error boundary
+<ErrorBoundary>
+  <YourComponent />
+</ErrorBoundary>
+```
+
+### Toast Notifications
+```jsx
+// Using the toast hook
+import { useToast } from "@/hooks/use-toast";
+
+const { toast } = useToast();
+
+// Success toast
+toast({
+  title: "Success!",
+  description: "Your action was completed successfully.",
+});
+
+// Error toast
+toast({
+  title: "Error",
+  description: "Something went wrong.",
+  variant: "destructive",
+});
 ```
 
 ### Cards and Containers
@@ -262,6 +341,8 @@ All colors are defined as CSS variables in `src/index.css`, allowing for:
 - Each component has its own variant file (e.g., `button.variants.ts`)
 - Consistent API across all components
 - TypeScript support for all variants and props
+- Focused component library with only actively used components
+- Clean separation between UI components and business logic
 
 ## 📊 Performance Considerations
 
@@ -269,6 +350,8 @@ All colors are defined as CSS variables in `src/index.css`, allowing for:
 - Only necessary Tailwind classes are included in production
 - Tree-shaking eliminates unused code
 - Optimized font loading with `font-display: swap`
+- Lean component library (43% CSS bundle reduction from cleanup)
+- No unused UI components in production build
 
 ### Runtime Performance
 - CSS-in-JS avoided for better performance
@@ -279,17 +362,19 @@ All colors are defined as CSS variables in `src/index.css`, allowing for:
 
 ### Planned Additions
 - Dark mode support with automatic system detection
-- Additional component variants for specialized use cases
+- Additional input types (textarea, select, etc.) as needed
 - Enhanced animation library for micro-interactions
-- Expanded color palette for brand variations
+- Expanded notification types for better UX
 
-### Migration Path
-When adding new components:
+### Adding New Components
+When adding new components to the design system:
 1. Follow the established variant pattern
 2. Ensure responsive design across all breakpoints
 3. Test accessibility with keyboard navigation
 4. Validate color contrast ratios
 5. Add comprehensive tests for all variants
+6. Only add components that are actively used
+7. Remove any components that become obsolete
 
 ---
 
