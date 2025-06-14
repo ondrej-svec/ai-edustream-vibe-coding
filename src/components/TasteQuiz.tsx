@@ -27,53 +27,86 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const [roasterCountry, setRoasterCountry] = useState<RoasterCountry | undefined>(undefined);
 
   const flavorOptions = [
-    { name: "Fruity", description: "Bright, fresh fruit notes like berries, stone fruits, or citrus. These coffees often have a vibrant, juicy character that's reminiscent of biting into fresh fruit." },
-    { name: "Nutty", description: "Rich, warm notes of almonds, hazelnuts, or walnuts. These flavors provide a comforting, roasted character with hints of toasted nuts and oils." },
-    { name: "Chocolatey", description: "Deep cocoa, dark chocolate, or milk chocolate flavors. Ranges from bitter dark chocolate to sweet milk chocolate, often with creamy undertones." },
-    { name: "Earthy", description: "Grounded, soil-like notes with forest floor characteristics. Think of wet earth after rain, mushrooms, or the smell of a forest floor." },
-    { name: "Bright", description: "Vibrant acidity with lively, sparkling characteristics. These coffees wake up your palate with crisp, clean notes that cut through richness." },
-    { name: "Wild", description: "Unique, unconventional flavors that are bold and adventurous. These coffees have unexpected notes that challenge traditional coffee expectations." },
-    { name: "Caramel", description: "Sweet, buttery caramel and toffee-like flavors. Rich, golden sweetness reminiscent of burnt sugar, butterscotch, and smooth caramel candy." },
-    { name: "Floral", description: "Delicate flower notes like jasmine, lavender, or rose. Light, aromatic qualities that add elegance and perfume-like characteristics to the cup." },
-    { name: "Citrusy", description: "Zesty lemon, orange, or grapefruit characteristics. Bright, tangy notes that provide refreshing acidity and clean, crisp finishes." },
-    { name: "Berry-like", description: "Specific berry flavors like blueberry, raspberry, or blackberry. Sweet-tart fruit notes with jammy qualities and natural fruit sweetness." },
-    { name: "Vanilla", description: "Sweet, creamy vanilla bean and custard-like notes. Smooth, dessert-like qualities with warm, comforting sweetness and creamy texture." },
-    { name: "Spicy", description: "Warm spices like cinnamon, clove, or black pepper. Adds complexity with heating spices that create depth and interesting flavor layers." },
-    { name: "Smoky", description: "Rich, roasted flavors with hints of smoke and char. Deep, intense notes reminiscent of campfire, barbecue, or wood-fired roasting." },
-    { name: "Honey", description: "Natural sweetness with floral honey characteristics. Delicate, golden sweetness with subtle floral undertones and syrupy mouthfeel." },
-    { name: "Wine-like", description: "Complex, fermented notes similar to red or white wine. Sophisticated acidity and tannins with grape-like or wine barrel characteristics." },
-    { name: "Tropical", description: "Exotic fruit flavors like mango, pineapple, or coconut. Bright, sweet, and often juicy notes that transport you to tropical destinations." },
-    { name: "Creamy", description: "Smooth, rich mouthfeel with buttery texture. Full-bodied coffees with silky, velvety texture that coats the palate pleasantly." },
-    { name: "Bold", description: "Strong, intense flavors with powerful presence. High-impact coffees that make a statement with robust, uncompromising character." }
+    { name: "Bright", description: "Vibrant acidity, lively and crisp with citrus-like qualities" },
+    { name: "Fruity", description: "Berry, stone fruit, tropical fruit flavors" },
+    { name: "Citrusy", description: "Lemon, lime, orange, grapefruit notes" },
+    { name: "Nutty", description: "Almond, hazelnut, walnut, pecan undertones" },
+    { name: "Chocolatey", description: "Rich cocoa, dark chocolate, milk chocolate notes" },
+    { name: "Floral", description: "Jasmine, lavender, rose, tea-like aromatics" },
+    { name: "Spicy", description: "Cinnamon, clove, cardamom, black pepper warmth" },
+    { name: "Earthy", description: "Woody, herbal, mushroom, forest floor qualities" },
+    { name: "Sweet", description: "Caramel, vanilla, honey, brown sugar notes" },
+    { name: "Smoky", description: "Roasted, charred, barbecue, tobacco-like" },
+    { name: "Wine-like", description: "Fermented, grape, red wine, complex fruit notes" },
+    { name: "Tropical", description: "Pineapple, mango, coconut, exotic fruit flavors" },
+    { name: "Caramelized", description: "Burnt sugar, toffee, molasses, maple syrup" },
+    { name: "Herbal", description: "Mint, sage, thyme, green tea, grassy notes" },
+    { name: "Buttery", description: "Creamy, rich, smooth, dairy-like mouthfeel" },
+    { name: "Tangy", description: "Sharp acidity, tartness, sour fruit qualities" },
   ];
 
   const brewingMethods = [
     { name: "V60", description: "Pour-over method that highlights bright, clean flavors and acidity. Cone-shaped dripper with spiral ridges for even extraction." },
     { name: "Aeropress", description: "Versatile brewing method producing clean, full-bodied coffee. Uses air pressure for quick extraction with minimal bitterness." },
     { name: "Espresso", description: "Concentrated coffee with rich crema, perfect for milk drinks. High-pressure extraction creating intense, syrupy coffee base." },
-    { name: "Moka", description: "Stovetop brewing creating strong, concentrated coffee with bold flavors. Italian method producing coffee between espresso and drip." },
+    { name: "Moka Pot", description: "Stovetop brewing creating strong, concentrated coffee with bold flavors. Italian method producing coffee between espresso and drip." },
     { name: "French Press", description: "Full immersion brewing for rich, heavy-bodied coffee with oils. Metal filter allows oils and fine particles for full flavor." },
     { name: "Chemex", description: "Clean, bright cup with paper filter removing oils and sediment. Thick filter creates exceptionally clean, tea-like coffee." },
     { name: "Cold Brew", description: "Smooth, low-acid coffee brewed with cold water over time. Extended steeping creates naturally sweet, smooth concentrate." },
-    { name: "Turkish", description: "Traditional method creating thick, strong coffee with fine grounds. Unfiltered brewing with coffee grounds remaining in cup." },
+    { name: "Turkish Coffee", description: "Traditional method creating thick, strong coffee with fine grounds. Unfiltered brewing with coffee grounds remaining in cup." },
+    { name: "Pour Over (General)", description: "Manual brewing method with controlled water pouring over coffee grounds. Allows precise control over extraction time and flavor." },
+    { name: "Drip Coffee Maker", description: "Automatic brewing with consistent water temperature and timing. Convenient method for daily coffee with balanced flavor." },
+    { name: "Siphon/Vacuum Pot", description: "Theatrical brewing method using vapor pressure and vacuum. Creates clean, bright coffee with unique brewing experience." },
+    { name: "Kalita Wave", description: "Flat-bottom pour-over with three holes for even extraction. Produces balanced, consistent cups with forgiving brewing technique." },
+    { name: "Clever Dripper", description: "Immersion-dripper hybrid with valve control. Combines full immersion steeping with clean paper filtration." },
+    { name: "Hario Switch", description: "Immersion-dripper hybrid allowing control over brew time. Switch mechanism lets you control when coffee starts dripping." },
+    { name: "Origami Dripper", description: "Versatile dripper compatible with multiple filter types. Allows experimentation with different brewing styles and filters." },
     { name: "Pulsar", description: "Hybrid brewing method combining immersion and percolation. Unique dripper design for controlled water flow and even extraction." },
-    { name: "Hario Switch", description: "Immersion-dripper hybrid allowing control over brew time. Switch mechanism lets you control when coffee starts dripping." }
+    { name: "Nitro Cold Brew", description: "Cold brew infused with nitrogen gas for creamy texture. Creates smooth, cascading coffee with beer-like foam head." },
+    { name: "Espresso Machine", description: "Semi-automatic or automatic espresso brewing with precise pressure control. Professional-grade extraction for café-quality drinks." },
+    { name: "Percolator", description: "Traditional method cycling boiling water through coffee grounds. Creates strong, bold coffee with vintage brewing charm." },
+    { name: "Cowboy Coffee", description: "Simple campfire method boiling coffee grounds directly in water. Rustic brewing technique for outdoor adventures." }
   ];
 
   const milkOptions = [
     { value: "black", label: "Black coffee only" },
-    { value: "milk", label: "With dairy milk" },
-    { value: "plant", label: "With plant-based milk (oat, almond, etc.)" },
-    { value: "cream", label: "With cream or half-and-half" },
-    { value: "sweetened", label: "With sugar, honey, or syrups" },
-    { value: "mixed", label: "I enjoy it both black and with additions" }
+    { value: "splash", label: "Just a splash of milk" },
+    { value: "creamy", label: "Creamy with lots of milk" },
+    { value: "alternative", label: "Alternative milk (oat, almond, etc.)" },
+  ];
+
+  const roastOptions = [
+    { value: "light", label: "Light Roast" },
+    { value: "medium", label: "Medium Roast" },
+    { value: "dark", label: "Dark Roast" },
+  ];
+
+  const brewingOptions = [
+    { value: "espresso", label: "Espresso" },
+    { value: "espresso-machine", label: "Espresso Machine" },
+    { value: "pour-over", label: "Pour Over (V60, Chemex, etc.)" },
+    { value: "french-press", label: "French Press" },
+    { value: "aeropress", label: "Aeropress" },
+    { value: "drip-coffee-maker", label: "Drip Coffee Maker" },
+    { value: "cold-brew", label: "Cold Brew" },
+    { value: "moka-pot", label: "Moka Pot" },
+    { value: "turkish-coffee", label: "Turkish Coffee" },
+    { value: "siphon", label: "Siphon/Vacuum Pot" },
+    { value: "clever-dripper", label: "Clever Dripper" },
+    { value: "kalita-wave", label: "Kalita Wave" },
+    { value: "chemex", label: "Chemex" },
+    { value: "v60", label: "Hario V60" },
+    { value: "nitro-cold-brew", label: "Nitro Cold Brew" },
+    { value: "percolator", label: "Percolator" },
   ];
 
   const handleFlavorToggle = (flavor: string) => {
     setFlavors(prev => 
       prev.includes(flavor) 
         ? prev.filter(f => f !== flavor)
-        : [...prev, flavor]
+        : prev.length < VALIDATION.MAX_FLAVORS 
+          ? [...prev, flavor]
+          : prev
     );
   };
 
@@ -85,101 +118,17 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     );
   };
 
-  const isFormValid = flavors.length > 0 && milkPreference !== "";
+  const handleBudgetMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    setBudgetRange([value, Math.max(value, budgetRange[1])]);
+  };
 
-  // Mock coffee data for filtering demonstration
-  const baseRecommendations = [
-    {
-      id: "1",
-      name: "Ethiopian Yirgacheffe",
-      roaster: "Blue Bottle Coffee",
-      roasterCountry: "United States",
-      roasterContinent: "North America",
-      roastLevel: "Light",
-      flavorNotes: ["Fruity", "Bright", "Floral"],
-      recommendedBrewMethod: "V60",
-      price: "$18",
-      buyLink: "https://bluebottlecoffee.com",
-      shopName: "Blue Bottle Coffee",
-      shopLocation: "Oakland, CA",
-      whyPicked: "Your love for bright, fruity flavors makes this Ethiopian single-origin perfect for you.",
-    },
-    {
-      id: "2",
-      name: "Guatemala Antigua",
-      roaster: "Stumptown Coffee",
-      roasterCountry: "United States",
-      roasterContinent: "North America",
-      roastLevel: "Medium",
-      flavorNotes: ["Chocolatey", "Nutty", "Balanced"],
-      recommendedBrewMethod: "French Press",
-      price: "$16",
-      buyLink: "https://stumptowncoffee.com",
-      shopName: "Stumptown Coffee Roasters",
-      shopLocation: "Portland, OR",
-      whyPicked: "This medium roast balances richness with the nutty notes you enjoy.",
-    },
-    {
-      id: "3",
-      name: "Colombian Supremo",
-      roaster: "Counter Culture",
-      roasterCountry: "United States",
-      roasterContinent: "North America",
-      roastLevel: "Medium",
-      flavorNotes: ["Caramel", "Nutty", "Smooth"],
-      recommendedBrewMethod: "Aeropress",
-      price: "$19",
-      buyLink: "https://counterculturecoffee.com",
-      shopName: "Counter Culture Coffee",
-      shopLocation: "Durham, NC",
-      whyPicked: "The caramel sweetness and smooth body align perfectly with your preferences.",
-    },
-    {
-      id: "4",
-      name: "Sumatra Mandheling",
-      roaster: "Intelligentsia",
-      roasterCountry: "United States",
-      roasterContinent: "North America",
-      roastLevel: "Dark",
-      flavorNotes: ["Earthy", "Wild", "Bold"],
-      recommendedBrewMethod: "French Press",
-      price: "$17",
-      buyLink: "https://intelligentsiacoffee.com",
-      shopName: "Intelligentsia Coffee",
-      shopLocation: "Chicago, IL",
-      whyPicked: "For those seeking adventure - this wild, earthy profile will surprise and delight.",
-    },
-    {
-      id: "5",
-      name: "Kenya AA",
-      roaster: "Ritual Coffee",
-      roasterCountry: "United States",
-      roasterContinent: "North America",
-      roastLevel: "Light",
-      flavorNotes: ["Bright", "Berry-like", "Wine-like"],
-      recommendedBrewMethod: "Chemex",
-      price: "$22",
-      buyLink: "https://ritualcoffee.com",
-      shopName: "Ritual Coffee Roasters",
-      shopLocation: "San Francisco, CA",
-      whyPicked: "The bright acidity and complex fruit notes match your sophisticated palate.",
-    },
-    {
-      id: "6",
-      name: "Brazilian Cerrado",
-      roaster: "Counter Culture",
-      roasterCountry: "United States",
-      roasterContinent: "North America",
-      roastLevel: "Medium",
-      flavorNotes: ["Chocolatey", "Nutty", "Creamy"],
-      recommendedBrewMethod: "Espresso",
-      price: "$20",
-      buyLink: "https://counterculturecoffee.com",
-      shopName: "Counter Culture Coffee",
-      shopLocation: "Durham, NC",
-      whyPicked: "Excellent for espresso and milk drinks with chocolate and nut characteristics.",
-    }
-  ];
+  const handleBudgetMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    setBudgetRange([Math.min(budgetRange[0], value), value]);
+  };
+
+  const isFormValid = flavors.length > 0 && milkPreference !== "";
 
   const handleSubmit = () => {
     if (!isFormValid) {
@@ -189,15 +138,6 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
         variant: "destructive"
       });
       return;
-    }
-
-    // Mock filtering logic for roasterContinent and roasterCountry
-    let filteredCoffees = baseRecommendations;
-    if (roasterContinent) {
-      filteredCoffees = filteredCoffees.filter(c => c.roasterContinent === roasterContinent);
-    }
-    if (roasterCountry) {
-      filteredCoffees = filteredCoffees.filter(c => c.roasterCountry === roasterCountry);
     }
 
     const preferences: TastePreferences = {
@@ -262,23 +202,33 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
           <label className="text-lg font-medium text-gray-900 mb-4 block">
             What flavors do you enjoy? <span className="text-red-500">*</span>
           </label>
-          <p className="text-sm text-gray-500 mb-4">Select all that apply.</p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <p className="text-sm text-gray-500 mb-4">Select {VALIDATION.MIN_FLAVORS}-{VALIDATION.MAX_FLAVORS} flavors that appeal to you:</p>
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {flavorOptions.map((flavor) => (
-              <div key={flavor.name} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200">
-                <input
-                  type="checkbox"
+              <div key={flavor.name} className="flex items-start space-x-3 p-3 sm:p-4 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200 min-h-[44px]">
+                <input 
+                  type="checkbox" 
                   id={flavor.name}
                   checked={flavors.includes(flavor.name)}
                   onChange={() => handleFlavorToggle(flavor.name)}
-                  className="w-4 h-4"
+                  className="w-4 h-4 mt-1 flex-shrink-0"
                 />
-                <label htmlFor={flavor.name} className="cursor-pointer font-medium text-sm">
-                  {flavor.name}
-                </label>
+                <div className="flex-1 min-w-0">
+                  <label htmlFor={flavor.name} className="cursor-pointer font-medium text-sm sm:text-base block">
+                    {flavor.name}
+                  </label>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1 leading-tight">
+                    {flavor.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
+          {flavors.length > 0 && (
+            <p className="text-sm text-gray-600 mt-3">
+              Selected: {flavors.join(", ")} ({flavors.length}/{VALIDATION.MAX_FLAVORS})
+            </p>
+          )}
         </div>
 
         {/* Milk Preference - Required */}
@@ -319,7 +269,7 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
                   min={VALIDATION.BUDGET_MIN}
                   max={VALIDATION.BUDGET_MAX}
                   value={budgetRange[0]}
-                  onChange={(e) => setBudgetRange([parseInt(e.target.value), budgetRange[1]])}
+                  onChange={handleBudgetMinChange}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
@@ -330,7 +280,7 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
                   min={VALIDATION.BUDGET_MIN}
                   max={VALIDATION.BUDGET_MAX}
                   value={budgetRange[1]}
-                  onChange={(e) => setBudgetRange([budgetRange[0], parseInt(e.target.value)])}
+                  onChange={handleBudgetMaxChange}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
@@ -370,69 +320,42 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
                   <p className="text-sm text-gray-500">Let us recommend based on your taste preferences</p>
                 </label>
               </div>
-              <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <input 
-                  type="radio" 
-                  value="light" 
-                  id="light"
-                  checked={roastLevel === "light"}
-                  onChange={(e) => setRoastLevel(e.target.value)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="light" className="flex-1 cursor-pointer">
-                  <span className="font-medium">Light Roast</span>
-                  <p className="text-sm text-gray-500">Bright, acidic, complex flavors</p>
-                </label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <input 
-                  type="radio" 
-                  value="medium" 
-                  id="medium"
-                  checked={roastLevel === "medium"}
-                  onChange={(e) => setRoastLevel(e.target.value)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="medium" className="flex-1 cursor-pointer">
-                  <span className="font-medium">Medium Roast</span>
-                  <p className="text-sm text-gray-500">Balanced, smooth, approachable</p>
-                </label>
-              </div>
-              <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <input 
-                  type="radio" 
-                  value="dark" 
-                  id="dark"
-                  checked={roastLevel === "dark"}
-                  onChange={(e) => setRoastLevel(e.target.value)}
-                  className="w-4 h-4"
-                />
-                <label htmlFor="dark" className="flex-1 cursor-pointer">
-                  <span className="font-medium">Dark Roast</span>
-                  <p className="text-sm text-gray-500">Bold, rich, full-bodied</p>
-                </label>
-              </div>
+              {roastOptions.map((option) => (
+                <div key={option.value} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                  <input 
+                    type="radio" 
+                    value={option.value} 
+                    id={option.value}
+                    checked={roastLevel === option.value}
+                    onChange={(e) => setRoastLevel(e.target.value)}
+                    className="w-4 h-4"
+                  />
+                  <label htmlFor={option.value} className="flex-1 cursor-pointer">
+                    <span className="font-medium">{option.label}</span>
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Brewing Method - Optional */}
           <div>
             <label className="text-base font-medium text-gray-900 mb-4 block">
-              What brewing methods do you use?
+              Preferred brewing methods?
             </label>
-            <p className="text-sm text-gray-500 mb-4">Select any methods you use or are interested in trying:</p>
-            <div className="grid grid-cols-2 gap-3">
-              {brewingMethods.map((method) => (
-                <div key={method.name} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200">
-                  <input
-                    type="checkbox"
-                    id={method.name}
-                    checked={brewingMethod.includes(method.name)}
-                    onChange={() => handleBrewingMethodToggle(method.name)}
-                    className="w-4 h-4"
+            <p className="text-sm text-gray-500 mb-4">Select all that apply (optional):</p>
+            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {brewingOptions.map((option) => (
+                <div key={option.value} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200 min-h-[44px]">
+                  <input 
+                    type="checkbox" 
+                    id={option.value}
+                    checked={brewingMethod.includes(option.value)}
+                    onChange={() => handleBrewingMethodToggle(option.value)}
+                    className="w-4 h-4 flex-shrink-0"
                   />
-                  <label htmlFor={method.name} className="cursor-pointer font-medium text-sm">
-                    {method.name}
+                  <label htmlFor={option.value} className="flex-1 cursor-pointer font-medium text-sm sm:text-base">
+                    {option.label}
                   </label>
                 </div>
               ))}

@@ -12,7 +12,7 @@ describe('Badge', () => {
 
   it('applies the default variant styles', () => {
     const { getByText } = render(<Badge>Default</Badge>);
-    expect(getByText('Default')).toHaveClass('bg-primary', 'text-primary-foreground');
+    expect(getByText('Default')).toHaveClass('bg-gradient-to-r', 'from-primary', 'to-accent', 'text-primary-foreground');
   });
 
   it('applies the secondary variant styles', () => {

@@ -44,6 +44,8 @@ export const VALIDATION = {
   BUDGET_MIN: 10,
   BUDGET_MAX: 50,
   BUDGET_STEP: 5,
+  MIN_FLAVORS: 1,
+  MAX_FLAVORS: 5,
   FLAVORS_REQUIRED: 'Please select at least one flavor.',
   MILK_REQUIRED: 'Please select a milk preference.',
   // Add more validation rules as needed
