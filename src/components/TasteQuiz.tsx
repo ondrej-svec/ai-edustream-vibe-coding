@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // TODO: Replace with shadcn/ui or Magic UI Card
+// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"; // TODO: Replace with shadcn/ui or Magic UI RadioGroup
+// import { Label } from "@/components/ui/label"; // TODO: Replace with shadcn/ui or Magic UI Label
+// import { Checkbox } from "@/components/ui/checkbox"; // TODO: Replace with shadcn/ui or Magic UI Checkbox
+// import { Slider } from "@/components/ui/slider"; // TODO: Replace with shadcn/ui or Magic UI Slider
+// import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"; // TODO: Replace with shadcn/ui or Magic UI HoverCard
 import { TastePreferences, RoasterContinent, RoasterCountry } from "@/types/coffee";
 import { useToast } from "@/hooks/use-toast";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { VALIDATION, ERRORS, DEFAULTS, ROASTER_CONTINENT_COUNTRY_MAP } from "@/constants";
 import RoasterGeographicFilter from "@/components/RoasterGeographicFilter";
 
@@ -200,21 +200,17 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
       filteredCoffees = filteredCoffees.filter(c => c.roasterCountry === roasterCountry);
     }
 
-    onSubmit({
-      roastLevel,
+    const preferences: TastePreferences = {
+      roastLevel: roastLevel || "any",
       flavors,
       brewingMethod: brewingMethod.join(", "),
       budget: `$${budgetRange[0]}-${budgetRange[1]} per bag`,
       milkPreference,
-      // Always include proximity fields for API compatibility
-      roasterContinent: roasterContinent ?? undefined,
-      roasterCountry: roasterCountry ?? undefined,
-    });
+      roasterContinent,
+      roasterCountry
+    };
 
-    toast({
-      title: "Perfect! ✨",
-      description: "Finding your ideal coffee matches...",
-    });
+    onSubmit(preferences);
   };
 
   const handleReset = () => {
@@ -228,27 +224,27 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     onReset();
   };
 
-  // Dynamically compute allCountries based on selected continent
+  // Get all countries for the current continent or all countries if no continent selected
   const allCountries: string[] = roasterContinent
     ? ROASTER_CONTINENT_COUNTRY_MAP[roasterContinent] || []
     : Array.from(new Set(Object.values(ROASTER_CONTINENT_COUNTRY_MAP).flat()));
 
   return (
-    <Card className="bg-white border-gray-200 shadow-sm">
-      <CardHeader className="bg-gray-50 border-b border-gray-200">
-        <CardTitle className="text-2xl text-gray-900 text-center font-medium">
+    <div className="bg-white border-gray-200 shadow-sm border rounded-lg">
+      <div className="bg-gray-50 border-b border-gray-200 p-6">
+        <h2 className="text-2xl text-gray-900 text-center font-medium">
           Coffee Taste Profile
-        </CardTitle>
+        </h2>
         <p className="text-gray-600 text-center text-sm">
           Tell us your preferences to find your perfect match
         </p>
-      </CardHeader>
-      <CardContent className="p-8 space-y-8">
+      </div>
+      <div className="p-8 space-y-8">
         {/* Roaster Proximity Filter */}
         <div>
-          <Label className="text-lg font-medium text-gray-900 mb-4 block">
+          <label className="text-lg font-medium text-gray-900 mb-4 block">
             Prefer roasters in a specific region?
-          </Label>
+          </label>
           <RoasterGeographicFilter
             roasterContinent={roasterContinent}
             roasterCountry={roasterCountry}
@@ -260,72 +256,84 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
             allCountries={allCountries}
           />
         </div>
-        {/* Required Fields */}
         
         {/* Flavors - Required */}
         <div>
-          <Label className="text-lg font-medium text-gray-900 mb-4 block">
+          <label className="text-lg font-medium text-gray-900 mb-4 block">
             What flavors do you enjoy? <span className="text-red-500">*</span>
-          </Label>
-          <p className="text-sm text-gray-500 mb-4">Select all that apply. Hover for detailed descriptions.</p>
+          </label>
+          <p className="text-sm text-gray-500 mb-4">Select all that apply.</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {flavorOptions.map((flavor) => (
-              <HoverCard key={flavor.name}>
-                <HoverCardTrigger asChild>
-                  <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200">
-                    <Checkbox
-                      id={flavor.name}
-                      checked={flavors.includes(flavor.name)}
-                      onCheckedChange={() => handleFlavorToggle(flavor.name)}
-                    />
-                    <Label htmlFor={flavor.name} className="cursor-pointer font-medium text-sm">
-                      {flavor.name}
-                    </Label>
-                  </div>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-80 bg-white border-gray-200">
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-semibold text-gray-900">{flavor.name}</h4>
-                    <p className="text-sm text-gray-600">{flavor.description}</p>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
+              <div key={flavor.name} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200">
+                <input
+                  type="checkbox"
+                  id={flavor.name}
+                  checked={flavors.includes(flavor.name)}
+                  onChange={() => handleFlavorToggle(flavor.name)}
+                  className="w-4 h-4"
+                />
+                <label htmlFor={flavor.name} className="cursor-pointer font-medium text-sm">
+                  {flavor.name}
+                </label>
+              </div>
             ))}
           </div>
         </div>
 
         {/* Milk Preference - Required */}
         <div>
-          <Label className="text-lg font-medium text-gray-900 mb-4 block">
+          <label className="text-lg font-medium text-gray-900 mb-4 block">
             How do you prefer to drink your coffee? <span className="text-red-500">*</span>
-          </Label>
-          <RadioGroup value={milkPreference} onValueChange={setMilkPreference}>
+          </label>
+          <div className="space-y-2">
             {milkOptions.map((option) => (
               <div key={option.value} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <RadioGroupItem value={option.value} id={option.value} />
-                <Label htmlFor={option.value} className="flex-1 cursor-pointer font-medium">
+                <input 
+                  type="radio" 
+                  value={option.value} 
+                  id={option.value}
+                  checked={milkPreference === option.value}
+                  onChange={(e) => setMilkPreference(e.target.value)}
+                  className="w-4 h-4"
+                />
+                <label htmlFor={option.value} className="flex-1 cursor-pointer font-medium">
                   {option.label}
-                </Label>
+                </label>
               </div>
             ))}
-          </RadioGroup>
+          </div>
         </div>
 
         {/* Budget Range - Required */}
         <div>
-          <Label className="text-lg font-medium text-gray-900 mb-4 block">
+          <label className="text-lg font-medium text-gray-900 mb-4 block">
             Budget range per bag <span className="text-red-500">*</span>
-          </Label>
+          </label>
           <div className="space-y-4">
             <div className="px-4">
-              <Slider
-                value={budgetRange}
-                onValueChange={setBudgetRange}
-                max={VALIDATION.BUDGET_MAX}
-                min={VALIDATION.BUDGET_MIN}
-                step={VALIDATION.BUDGET_STEP}
-                className="w-full"
-              />
+              <div className="space-y-2">
+                <label className="text-sm text-gray-600">Minimum: ${budgetRange[0]}</label>
+                <input
+                  type="range"
+                  min={VALIDATION.BUDGET_MIN}
+                  max={VALIDATION.BUDGET_MAX}
+                  value={budgetRange[0]}
+                  onChange={(e) => setBudgetRange([parseInt(e.target.value), budgetRange[1]])}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm text-gray-600">Maximum: ${budgetRange[1]}</label>
+                <input
+                  type="range"
+                  min={VALIDATION.BUDGET_MIN}
+                  max={VALIDATION.BUDGET_MAX}
+                  value={budgetRange[1]}
+                  onChange={(e) => setBudgetRange([budgetRange[0], parseInt(e.target.value)])}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </div>
             </div>
             <div className="flex justify-between text-sm text-gray-600">
               <span>${VALIDATION.BUDGET_MIN}</span>
@@ -343,63 +351,90 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
           
           {/* Roast Preference - Optional */}
           <div className="mb-8">
-            <Label className="text-base font-medium text-gray-900 mb-4 block">
+            <label className="text-base font-medium text-gray-900 mb-4 block">
               Any roast preference?
-            </Label>
+            </label>
             <p className="text-sm text-gray-500 mb-4">We can recommend based on your taste preferences, but let us know if you have a preference:</p>
-            <RadioGroup value={roastLevel} onValueChange={setRoastLevel}>
+            <div className="space-y-2">
               <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <RadioGroupItem value="light" id="light" />
-                <Label htmlFor="light" className="flex-1 cursor-pointer">
+                <input 
+                  type="radio" 
+                  value="" 
+                  id="no-preference"
+                  checked={roastLevel === ""}
+                  onChange={(e) => setRoastLevel(e.target.value)}
+                  className="w-4 h-4"
+                />
+                <label htmlFor="no-preference" className="flex-1 cursor-pointer">
+                  <span className="font-medium">No Preference</span>
+                  <p className="text-sm text-gray-500">Let us recommend based on your taste preferences</p>
+                </label>
+              </div>
+              <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <input 
+                  type="radio" 
+                  value="light" 
+                  id="light"
+                  checked={roastLevel === "light"}
+                  onChange={(e) => setRoastLevel(e.target.value)}
+                  className="w-4 h-4"
+                />
+                <label htmlFor="light" className="flex-1 cursor-pointer">
                   <span className="font-medium">Light Roast</span>
                   <p className="text-sm text-gray-500">Bright, acidic, complex flavors</p>
-                </Label>
+                </label>
               </div>
               <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <RadioGroupItem value="medium" id="medium" />
-                <Label htmlFor="medium" className="flex-1 cursor-pointer">
+                <input 
+                  type="radio" 
+                  value="medium" 
+                  id="medium"
+                  checked={roastLevel === "medium"}
+                  onChange={(e) => setRoastLevel(e.target.value)}
+                  className="w-4 h-4"
+                />
+                <label htmlFor="medium" className="flex-1 cursor-pointer">
                   <span className="font-medium">Medium Roast</span>
                   <p className="text-sm text-gray-500">Balanced, smooth, approachable</p>
-                </Label>
+                </label>
               </div>
               <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <RadioGroupItem value="dark" id="dark" />
-                <Label htmlFor="dark" className="flex-1 cursor-pointer">
+                <input 
+                  type="radio" 
+                  value="dark" 
+                  id="dark"
+                  checked={roastLevel === "dark"}
+                  onChange={(e) => setRoastLevel(e.target.value)}
+                  className="w-4 h-4"
+                />
+                <label htmlFor="dark" className="flex-1 cursor-pointer">
                   <span className="font-medium">Dark Roast</span>
                   <p className="text-sm text-gray-500">Bold, rich, full-bodied</p>
-                </Label>
+                </label>
               </div>
-            </RadioGroup>
+            </div>
           </div>
 
           {/* Brewing Method - Optional */}
           <div>
-            <Label className="text-base font-medium text-gray-900 mb-4 block">
+            <label className="text-base font-medium text-gray-900 mb-4 block">
               What brewing methods do you use?
-            </Label>
-            <p className="text-sm text-gray-500 mb-4">Select any methods you use or are interested in trying. Hover for details:</p>
+            </label>
+            <p className="text-sm text-gray-500 mb-4">Select any methods you use or are interested in trying:</p>
             <div className="grid grid-cols-2 gap-3">
               {brewingMethods.map((method) => (
-                <HoverCard key={method.name}>
-                  <HoverCardTrigger asChild>
-                    <div className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200">
-                      <Checkbox
-                        id={method.name}
-                        checked={brewingMethod.includes(method.name)}
-                        onCheckedChange={() => handleBrewingMethodToggle(method.name)}
-                      />
-                      <Label htmlFor={method.name} className="cursor-pointer font-medium text-sm">
-                        {method.name}
-                      </Label>
-                    </div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-80 bg-white border-gray-200">
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-semibold text-gray-900">{method.name}</h4>
-                      <p className="text-sm text-gray-600">{method.description}</p>
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
+                <div key={method.name} className="flex items-center space-x-2 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer border border-gray-200">
+                  <input
+                    type="checkbox"
+                    id={method.name}
+                    checked={brewingMethod.includes(method.name)}
+                    onChange={() => handleBrewingMethodToggle(method.name)}
+                    className="w-4 h-4"
+                  />
+                  <label htmlFor={method.name} className="cursor-pointer font-medium text-sm">
+                    {method.name}
+                  </label>
+                </div>
               ))}
             </div>
           </div>
@@ -422,8 +457,8 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
             Reset
           </Button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
