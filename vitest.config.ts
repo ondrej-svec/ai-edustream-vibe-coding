@@ -7,6 +7,11 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './setupTests.ts',
     include: ['src/**/*.test.tsx', 'src/**/*.test.ts'],
+    coverage: {
+      provider: 'istanbul',
+      reporter: ['text', 'html'],
+      reportsDirectory: './coverage',
+    },
   },
   resolve: {
     alias: {

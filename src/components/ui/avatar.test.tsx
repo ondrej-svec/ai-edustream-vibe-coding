@@ -1,8 +1,17 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { Avatar, AvatarImage, AvatarFallback } from './avatar';
+
+// Mock Radix AvatarPrimitive.Image to always render a real <img> for test reliability
+vi.mock('@radix-ui/react-avatar', async () => {
+  const actual = await vi.importActual<any>('@radix-ui/react-avatar');
+  return {
+    ...actual,
+    Image: React.forwardRef<HTMLImageElement, any>((props, ref) => <img ref={ref} {...props} />),
+  };
+});
 
 describe('Avatar', () => {
   it('renders the Avatar root', () => {
@@ -13,7 +22,7 @@ describe('Avatar', () => {
   it('renders AvatarImage inside Avatar', () => {
     render(
       <Avatar>
-        <AvatarImage src="/avatar.png" alt="avatar" data-testid="avatar-image" />
+        <AvatarImage src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBAp6Q2VwAAAAASUVORK5CYII=" alt="avatar" data-testid="avatar-image" />
       </Avatar>
     );
     expect(screen.getByTestId('avatar-image')).toBeInTheDocument();
@@ -42,7 +51,7 @@ describe('Avatar', () => {
   it('applies custom className to AvatarImage', () => {
     render(
       <Avatar>
-        <AvatarImage className="custom-img" data-testid="avatar-image" />
+        <AvatarImage src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBAp6Q2VwAAAAASUVORK5CYII=" alt="avatar" className="custom-img" data-testid="avatar-image" />
       </Avatar>
     );
     expect(screen.getByTestId('avatar-image')).toHaveClass('custom-img');
