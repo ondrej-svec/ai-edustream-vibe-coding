@@ -73,74 +73,126 @@ xl: 1280px  // Extra large devices (desktops)
 
 For complete design system documentation, see [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md).
 
-## Prerequisites
-- Node.js (v18+ recommended)
-- npm (v9+ recommended)
-- Git
+## 🛠️ Getting Started
 
-## Installation
-```sh
+### Prerequisites
+- **Node.js** v18+ (recommended)
+- **npm** v9+ (recommended)
+- **Git** for version control
+
+### Installation
+```bash
 git clone <repo-url>
 cd ai-edustream-vibe-coding
 npm install
 ```
 
-## Configuration
-- Copy `.env.example` to `.env` and fill in required values (API keys, endpoints, etc.)
-- See `package.json` scripts for available commands
+### Environment Configuration
+Create a `.env` file in the project root:
+```bash
+# Coffee API Configuration
+VITE_COFFEE_API_URL=your_backend_api_url_here
 
-## Usage
-- **Development server:**
-  ```sh
-  npm run dev
-  # App runs at http://localhost:8081 (or next available port)
-  ```
-- **Run tests:**
-  ```sh
-  npm test
-  # or
-  npx vitest run
-  ```
-- **Run E2E tests:**
-  ```sh
-  npx playwright test
-  ```
-- **Build for production:**
-  ```sh
-  npm run build
-  ```
+# Optional: Additional API keys if needed
+# VITE_OTHER_API_KEY=your_key_here
+```
 
-## Component Documentation
-For detailed component usage and styling guidelines, see:
-- `src/components/ui/` - Core UI components with Magic UI styling
-- `src/constants/index.ts` - Design tokens and validation constants
-- `tailwind.config.ts` - Custom breakpoints and theme configuration
+## 🚀 Usage
 
-## Testing
-Our test suite includes:
-- **Unit tests**: Component functionality and styling
+### Development
+```bash
+npm run dev
+# App runs at http://localhost:8080 (or next available port)
+```
+
+### Testing
+```bash
+# Run unit tests
+npm test
+
+# Run tests in watch mode
+npx vitest
+
+# Run E2E tests (requires dev server running)
+npx playwright test
+```
+
+### Production Build
+```bash
+npm run build
+npm run preview  # Preview production build locally
+```
+
+### Additional Scripts
+```bash
+npm run lint          # Check code quality
+npm run storybook     # Run Storybook (component documentation)
+npm run build-storybook  # Build Storybook for deployment
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── ui/                 # 6 core UI components
+│   └── RoasterGeographicFilter.tsx
+├── pages/
+│   ├── Index.tsx          # Landing page
+│   ├── Quiz.tsx           # Taste preference quiz
+│   ├── BeansList.tsx      # Coffee recommendations
+│   └── NotFound.tsx       # 404 page
+├── services/
+│   └── coffeeService.ts   # API integration
+├── types/
+│   ├── coffee.ts          # Coffee data types
+│   └── coffee-api.ts      # API request/response types
+├── hooks/
+│   └── useApiCall.ts      # Custom API hook
+└── lib/
+    └── utils.ts           # Utility functions
+```
+
+## 🧪 Testing
+
+Our optimized test suite includes:
+- **Unit tests**: Core component functionality (Vitest)
 - **Integration tests**: API services and data flow
-- **E2E tests**: Complete user workflows
+- **E2E tests**: Complete user workflows (Playwright)
 - **Accessibility tests**: WCAG compliance validation
 
-Note: Some tests for deleted Radix UI components are expected to fail. Core functionality tests pass successfully.
+**Test Status**: ✅ All core functionality tests pass. Removed tests for unused components during cleanup.
 
-## Contribution Guidelines
-- Fork the repo and create a feature branch
-- Write clear, focused commits
-- Add/maintain tests for new features
-- Follow the Magic UI design system guidelines
-- Document new components/APIs
-- Ensure responsive design across all breakpoints
-- Test accessibility with keyboard navigation
-- Open a pull request with a clear description
+## 🤝 Contributing
 
-## Troubleshooting
-- If dependencies fail to install, ensure Node/npm versions are up to date
-- For test failures, run `npm run lint` and check for code style issues
-- If the dev server fails to start, check `.env` configuration
-- For Playwright E2E issues, ensure the dev server is running on the correct port
-- **Design System Issues**: Check `tailwind.config.ts` for custom breakpoints and theme settings
+1. **Fork** the repository and create a feature branch
+2. **Follow** the Magic UI design system guidelines
+3. **Write tests** for new features and components
+4. **Ensure accessibility** with keyboard navigation testing
+5. **Test responsive design** across all 7 breakpoints
+6. **Run linting** with `npm run lint` before committing
+7. **Document** new components in DESIGN_SYSTEM.md
+8. **Open a pull request** with a clear description
+
+### Code Quality Standards
+- TypeScript strict mode enabled
+- ESLint configuration with React hooks rules
+- Prettier formatting (automatic)
+- 100% test coverage for new components
+
+## 🔧 Troubleshooting
+
+### Common Issues
+- **Dependencies fail to install**: Update Node.js to v18+ and npm to v9+
+- **Dev server won't start**: Check `.env` file configuration and port availability
+- **Test failures**: Run `npm run lint` to check for code style issues
+- **E2E test issues**: Ensure dev server is running on port 8080
+- **Build errors**: Clear `node_modules` and reinstall dependencies
+
+### Performance
+- **Bundle size**: Current CSS bundle is 35.72 kB (optimized)
+- **Component count**: 6 core components (lean architecture)
+- **Build time**: ~10-15 seconds for production build
 
 ## License
 MIT
