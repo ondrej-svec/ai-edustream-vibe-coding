@@ -193,12 +193,21 @@ const BeansList = () => {
     if (!prefs) return baseRecommendations.slice(0, 3);
     return baseRecommendations
       .filter(coffee => {
+        // Geographic filtering
+        if (prefs.roasterCountry) {
+          if (coffee.roasterCountry !== prefs.roasterCountry) return false;
+        } else if (prefs.roasterContinent) {
+          if (coffee.roasterContinent !== prefs.roasterContinent) return false;
+        }
+        // Roast level filter
         const roastMatch = !prefs.roastLevel || coffee.roastLevel.toLowerCase() === prefs.roastLevel.toLowerCase();
-        const flavorMatch = coffee.flavorNotes.some(note => 
-          prefs.flavors.some(prefFlavor => 
+        // Flavor notes filter
+        const flavorMatch = !prefs.flavors || prefs.flavors.length === 0 || coffee.flavorNotes.some(note =>
+          prefs.flavors.some(prefFlavor =>
             note.toLowerCase().includes(prefFlavor.toLowerCase())
           )
         );
+        // Add more filters as needed (budget, milkPreference, etc.)
         return roastMatch || flavorMatch;
       })
       .slice(0, 6);

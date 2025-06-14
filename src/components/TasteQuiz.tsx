@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { TastePreferences, RoasterContinent, RoasterCountry } from "@/types/coffee";
 import { useToast } from "@/hooks/use-toast";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { VALIDATION, ERRORS, DEFAULTS } from "@/constants";
+import { VALIDATION, ERRORS, DEFAULTS, ROASTER_CONTINENT_COUNTRY_MAP } from "@/constants";
 import RoasterGeographicFilter from "@/components/RoasterGeographicFilter";
 
 interface TasteQuizProps {
@@ -228,8 +228,10 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     onReset();
   };
 
-  // TODO: Fetch allCountries dynamically from API in the future
-  const allCountries: string[] = [];
+  // Dynamically compute allCountries based on selected continent
+  const allCountries: string[] = roasterContinent
+    ? ROASTER_CONTINENT_COUNTRY_MAP[roasterContinent] || []
+    : Array.from(new Set(Object.values(ROASTER_CONTINENT_COUNTRY_MAP).flat()));
 
   return (
     <Card className="bg-white border-gray-200 shadow-sm">
