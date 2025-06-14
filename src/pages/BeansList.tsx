@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, MapPin, ExternalLink, Coffee as CoffeeIcon, Clock, Thermometer } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Coffee, Recipe, TastePreferences } from "@/types/coffee";
+import { Coffee, Recipe, TastePreferences, RoasterContinent, RoasterCountry } from "@/types/coffee";
 import { UI, ERRORS, DEFAULTS } from "@/constants";
+import React from "react";
 
 const BeansList = () => {
   const navigate = useNavigate();
@@ -17,7 +18,8 @@ const BeansList = () => {
         id: "1",
         name: "Ethiopian Yirgacheffe",
         roaster: "Blue Bottle Coffee",
-        country: "Ethiopia",
+        roasterCountry: "United States",
+        roasterContinent: "North America",
         roastLevel: "Light",
         flavorNotes: ["Fruity", "Bright", "Floral"],
         recommendedBrewMethod: "V60",
@@ -45,7 +47,8 @@ const BeansList = () => {
         id: "2",
         name: "Guatemala Antigua",
         roaster: "Stumptown Coffee",
-        country: "Guatemala", 
+        roasterCountry: "United States",
+        roasterContinent: "North America",
         roastLevel: "Medium",
         flavorNotes: ["Chocolatey", "Nutty", "Balanced"],
         recommendedBrewMethod: "French Press",
@@ -73,7 +76,8 @@ const BeansList = () => {
         id: "3",
         name: "Colombian Supremo",
         roaster: "Counter Culture",
-        country: "Colombia",
+        roasterCountry: "United States",
+        roasterContinent: "North America",
         roastLevel: "Medium",
         flavorNotes: ["Caramel", "Nutty", "Smooth"],
         recommendedBrewMethod: "Aeropress",
@@ -101,7 +105,8 @@ const BeansList = () => {
         id: "4",
         name: "Sumatra Mandheling",
         roaster: "Intelligentsia",
-        country: "Indonesia",
+        roasterCountry: "United States",
+        roasterContinent: "North America",
         roastLevel: "Dark",
         flavorNotes: ["Earthy", "Wild", "Bold"],
         recommendedBrewMethod: "French Press",
@@ -129,7 +134,8 @@ const BeansList = () => {
         id: "5",
         name: "Kenya AA",
         roaster: "Ritual Coffee",
-        country: "Kenya",
+        roasterCountry: "United States",
+        roasterContinent: "North America",
         roastLevel: "Light",
         flavorNotes: ["Bright", "Berry-like", "Wine-like"],
         recommendedBrewMethod: "Chemex",
@@ -157,7 +163,8 @@ const BeansList = () => {
         id: "6",
         name: "Brazilian Cerrado",
         roaster: "Counter Culture",
-        country: "Brazil",
+        roasterCountry: "United States",
+        roasterContinent: "North America",
         roastLevel: "Medium",
         flavorNotes: ["Chocolatey", "Nutty", "Creamy"],
         recommendedBrewMethod: "Espresso",
@@ -184,7 +191,6 @@ const BeansList = () => {
     ];
 
     if (!prefs) return baseRecommendations.slice(0, 3);
-
     return baseRecommendations
       .filter(coffee => {
         const roastMatch = !prefs.roastLevel || coffee.roastLevel.toLowerCase() === prefs.roastLevel.toLowerCase();
@@ -265,8 +271,8 @@ const BeansList = () => {
                 
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Origin:</span>
-                    <span className="text-gray-900">{coffee.country}</span>
+                    <span className="text-gray-500">Roaster Country:</span>
+                    <span className="text-gray-900">{coffee.roasterCountry}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-500">Roast:</span>

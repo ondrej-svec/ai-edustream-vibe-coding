@@ -5,10 +5,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
-import { TastePreferences } from "@/types/coffee";
+import { TastePreferences, RoasterContinent, RoasterCountry } from "@/types/coffee";
 import { useToast } from "@/hooks/use-toast";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { VALIDATION, ERRORS, DEFAULTS } from "@/constants";
+import RoasterGeographicFilter from "@/components/RoasterGeographicFilter";
 
 interface TasteQuizProps {
   onSubmit: (preferences: TastePreferences) => void;
@@ -22,6 +23,8 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
   const [brewingMethod, setBrewingMethod] = useState<string[]>([]);
   const [budgetRange, setBudgetRange] = useState(DEFAULTS.BUDGET_RANGE);
   const [milkPreference, setMilkPreference] = useState("");
+  const [roasterContinent, setRoasterContinent] = useState<RoasterContinent | undefined>(undefined);
+  const [roasterCountry, setRoasterCountry] = useState<RoasterCountry | undefined>(undefined);
 
   const flavorOptions = [
     { name: "Fruity", description: "Bright, fresh fruit notes like berries, stone fruits, or citrus. These coffees often have a vibrant, juicy character that's reminiscent of biting into fresh fruit." },
@@ -84,6 +87,100 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
 
   const isFormValid = flavors.length > 0 && milkPreference !== "";
 
+  // Mock coffee data for filtering demonstration
+  const baseRecommendations = [
+    {
+      id: "1",
+      name: "Ethiopian Yirgacheffe",
+      roaster: "Blue Bottle Coffee",
+      roasterCountry: "United States",
+      roasterContinent: "North America",
+      roastLevel: "Light",
+      flavorNotes: ["Fruity", "Bright", "Floral"],
+      recommendedBrewMethod: "V60",
+      price: "$18",
+      buyLink: "https://bluebottlecoffee.com",
+      shopName: "Blue Bottle Coffee",
+      shopLocation: "Oakland, CA",
+      whyPicked: "Your love for bright, fruity flavors makes this Ethiopian single-origin perfect for you.",
+    },
+    {
+      id: "2",
+      name: "Guatemala Antigua",
+      roaster: "Stumptown Coffee",
+      roasterCountry: "United States",
+      roasterContinent: "North America",
+      roastLevel: "Medium",
+      flavorNotes: ["Chocolatey", "Nutty", "Balanced"],
+      recommendedBrewMethod: "French Press",
+      price: "$16",
+      buyLink: "https://stumptowncoffee.com",
+      shopName: "Stumptown Coffee Roasters",
+      shopLocation: "Portland, OR",
+      whyPicked: "This medium roast balances richness with the nutty notes you enjoy.",
+    },
+    {
+      id: "3",
+      name: "Colombian Supremo",
+      roaster: "Counter Culture",
+      roasterCountry: "United States",
+      roasterContinent: "North America",
+      roastLevel: "Medium",
+      flavorNotes: ["Caramel", "Nutty", "Smooth"],
+      recommendedBrewMethod: "Aeropress",
+      price: "$19",
+      buyLink: "https://counterculturecoffee.com",
+      shopName: "Counter Culture Coffee",
+      shopLocation: "Durham, NC",
+      whyPicked: "The caramel sweetness and smooth body align perfectly with your preferences.",
+    },
+    {
+      id: "4",
+      name: "Sumatra Mandheling",
+      roaster: "Intelligentsia",
+      roasterCountry: "United States",
+      roasterContinent: "North America",
+      roastLevel: "Dark",
+      flavorNotes: ["Earthy", "Wild", "Bold"],
+      recommendedBrewMethod: "French Press",
+      price: "$17",
+      buyLink: "https://intelligentsiacoffee.com",
+      shopName: "Intelligentsia Coffee",
+      shopLocation: "Chicago, IL",
+      whyPicked: "For those seeking adventure - this wild, earthy profile will surprise and delight.",
+    },
+    {
+      id: "5",
+      name: "Kenya AA",
+      roaster: "Ritual Coffee",
+      roasterCountry: "United States",
+      roasterContinent: "North America",
+      roastLevel: "Light",
+      flavorNotes: ["Bright", "Berry-like", "Wine-like"],
+      recommendedBrewMethod: "Chemex",
+      price: "$22",
+      buyLink: "https://ritualcoffee.com",
+      shopName: "Ritual Coffee Roasters",
+      shopLocation: "San Francisco, CA",
+      whyPicked: "The bright acidity and complex fruit notes match your sophisticated palate.",
+    },
+    {
+      id: "6",
+      name: "Brazilian Cerrado",
+      roaster: "Counter Culture",
+      roasterCountry: "United States",
+      roasterContinent: "North America",
+      roastLevel: "Medium",
+      flavorNotes: ["Chocolatey", "Nutty", "Creamy"],
+      recommendedBrewMethod: "Espresso",
+      price: "$20",
+      buyLink: "https://counterculturecoffee.com",
+      shopName: "Counter Culture Coffee",
+      shopLocation: "Durham, NC",
+      whyPicked: "Excellent for espresso and milk drinks with chocolate and nut characteristics.",
+    }
+  ];
+
   const handleSubmit = () => {
     if (!isFormValid) {
       toast({
@@ -94,12 +191,24 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
       return;
     }
 
+    // Mock filtering logic for roasterContinent and roasterCountry
+    let filteredCoffees = baseRecommendations;
+    if (roasterContinent) {
+      filteredCoffees = filteredCoffees.filter(c => c.roasterContinent === roasterContinent);
+    }
+    if (roasterCountry) {
+      filteredCoffees = filteredCoffees.filter(c => c.roasterCountry === roasterCountry);
+    }
+
     onSubmit({
       roastLevel,
       flavors,
       brewingMethod: brewingMethod.join(", "),
       budget: `$${budgetRange[0]}-${budgetRange[1]} per bag`,
-      milkPreference
+      milkPreference,
+      // Always include proximity fields for API compatibility
+      roasterContinent: roasterContinent ?? undefined,
+      roasterCountry: roasterCountry ?? undefined,
     });
 
     toast({
@@ -114,8 +223,13 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
     setBrewingMethod([]);
     setBudgetRange(DEFAULTS.BUDGET_RANGE);
     setMilkPreference("");
+    setRoasterContinent(undefined);
+    setRoasterCountry(undefined);
     onReset();
   };
+
+  // TODO: Fetch allCountries dynamically from API in the future
+  const allCountries: string[] = [];
 
   return (
     <Card className="bg-white border-gray-200 shadow-sm">
@@ -128,6 +242,22 @@ const TasteQuiz = ({ onSubmit, onReset }: TasteQuizProps) => {
         </p>
       </CardHeader>
       <CardContent className="p-8 space-y-8">
+        {/* Roaster Proximity Filter */}
+        <div>
+          <Label className="text-lg font-medium text-gray-900 mb-4 block">
+            Prefer roasters in a specific region?
+          </Label>
+          <RoasterGeographicFilter
+            roasterContinent={roasterContinent}
+            roasterCountry={roasterCountry}
+            onContinentChange={(val) => {
+              setRoasterContinent(val);
+              setRoasterCountry(undefined);
+            }}
+            onCountryChange={setRoasterCountry}
+            allCountries={allCountries}
+          />
+        </div>
         {/* Required Fields */}
         
         {/* Flavors - Required */}

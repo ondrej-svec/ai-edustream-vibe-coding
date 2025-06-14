@@ -9,6 +9,9 @@ export interface UserPreferences {
   };
   roastPreference?: 'light' | 'medium' | 'dark';
   brewMethods?: string[];
+  // Proximity filter fields (roaster location)
+  roasterContinent?: import('./coffee').RoasterContinent;
+  roasterCountry?: import('./coffee').RoasterCountry;
 }
 
 export interface CoffeeMatch {

@@ -10,11 +10,25 @@ describe('coffeeService.matchCoffee', () => {
       budgetRange: { min: 10, max: 30 },
       roastPreference: 'medium',
       brewMethods: ['V60', 'Espresso'],
+      roasterContinent: 'North America',
+      roasterCountry: 'United States',
     };
     const result = await coffeeService.matchCoffee(preferences);
     expect(result.matches.length).toBeGreaterThan(0);
     expect(result.matches[0]).toHaveProperty('name');
     expect(result.matches[0]).toHaveProperty('roaster');
+  });
+
+  it('handles preferences with only proximity fields', async () => {
+    const preferences: UserPreferences = {
+      flavorNotes: [],
+      drinkingStyle: 'black',
+      budgetRange: { min: 10, max: 30 },
+      roasterContinent: 'Europe',
+      roasterCountry: 'Italy',
+    };
+    const result = await coffeeService.matchCoffee(preferences);
+    expect(result.matches).toBeDefined();
   });
 
   it('throws error on API error response', async () => {
@@ -33,6 +47,8 @@ describe('coffeeService.matchCoffee', () => {
       budgetRange: { min: 10, max: 30 },
       roastPreference: 'medium',
       brewMethods: ['V60'],
+      roasterContinent: 'Africa',
+      roasterCountry: 'Ethiopia',
     };
     await expect(coffeeService.matchCoffee(preferences)).rejects.toThrow('bad request');
   });

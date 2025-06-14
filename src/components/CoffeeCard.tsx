@@ -1,20 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-
-interface Coffee {
-  id: string;
-  name: string;
-  roaster: string;
-  country: string;
-  roastLevel: string;
-  flavorNotes: string[];
-  recommendedBrewMethod: string;
-  price: string;
-  buyLink: string;
-  whyPicked: string;
-  image?: string;
-}
+import { Coffee } from "@/types/coffee";
 
 interface CoffeeCardProps {
   coffee: Coffee;
@@ -34,15 +21,13 @@ const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
     }
   };
 
-  const getCountryFlag = (country: string) => {
+  const getCountryFlag = (roasterCountry: string) => {
     const flags: { [key: string]: string } = {
-      'Ethiopia': '🇪🇹',
-      'Guatemala': '🇬🇹',
-      'Colombia': '🇨🇴',
-      'Indonesia': '🇮🇩',
-      'Kenya': '🇰🇪',
+      'United States': '🇺🇸',
+      'Italy': '🇮🇹',
+      // Add more as needed
     };
-    return flags[country] || '🌍';
+    return flags[roasterCountry] || '🌍';
   };
 
   return (
@@ -57,8 +42,8 @@ const CoffeeCard = ({ coffee }: CoffeeCardProps) => {
               by {coffee.roaster}
             </p>
             <div className="flex items-center space-x-2 mb-3">
-              <span className="text-lg">{getCountryFlag(coffee.country)}</span>
-              <span className="text-amber-600 font-medium">{coffee.country}</span>
+              <span className="text-lg">{getCountryFlag(coffee.roasterCountry)}</span>
+              <span className="text-amber-600 font-medium">{coffee.roasterCountry}</span>
               <Badge className={`${getRoastColor(coffee.roastLevel)} font-medium`}>
                 {coffee.roastLevel} Roast
               </Badge>

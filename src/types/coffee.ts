@@ -3,12 +3,24 @@
  * Centralized definitions for use across the app
  */
 
+// Geographic types for filtering and data consistency (roaster location)
+export type RoasterContinent =
+  | 'Africa'
+  | 'Asia'
+  | 'Europe'
+  | 'North America'
+  | 'South America'
+  | 'Oceania';
+
+export type RoasterCountry = string; // Consider stricter typing if needed
+
 // Core coffee entity
 export interface Coffee {
   id: string;
   name: string;
   roaster: string;
-  country: string;
+  roasterCountry: RoasterCountry; // Roaster's country
+  roasterContinent: RoasterContinent; // Roaster's continent
   roastLevel: string;
   flavorNotes: string[];
   recommendedBrewMethod?: string;
@@ -35,6 +47,8 @@ export interface CoffeeFilter {
   budget?: string;
   milkPreference?: string;
   brewingMethod?: string;
+  roasterContinent?: RoasterContinent; // Roaster's continent filter
+  roasterCountry?: RoasterCountry;     // Roaster's country filter
 }
 
 // API response wrappers
@@ -69,4 +83,6 @@ export interface TastePreferences {
   brewingMethod: string;
   budget: string;
   milkPreference?: string;
+  roasterContinent?: RoasterContinent;
+  roasterCountry?: RoasterCountry;
 } 

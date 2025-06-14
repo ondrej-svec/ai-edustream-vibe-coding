@@ -63,4 +63,18 @@ export const DEFAULTS = {
   COFFEE_IMAGE: '/images/default-coffee.png',
   BUDGET_RANGE: [15, 25],
   // Add more default values as needed
+};
+
+// --- Geographic Data: Roaster Continents to Countries Mapping ---
+// Used for proximity filtering by roaster location in coffee selection
+export const ROASTER_CONTINENT_COUNTRY_MAP: Record<
+  import("@/types/coffee").RoasterContinent,
+  import("@/types/coffee").RoasterCountry[]
+> = {
+  Africa: [], // No roasters in Africa in current data
+  Asia: [], // No roasters in Asia in current data
+  Europe: ["Italy"], // Example: add real roaster countries as needed
+  "North America": ["United States"],
+  "South America": [],
+  Oceania: [],
 }; 

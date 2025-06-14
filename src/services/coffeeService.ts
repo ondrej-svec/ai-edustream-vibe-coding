@@ -4,6 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL || '';
 
 /**
  * Fetches a list of available coffee types from the API.
+ * Accepts proximity filter fields (roasterContinent, roasterCountry) in preferences.
  * @returns A promise resolving to an array of coffee type objects.
  */
 export async function matchCoffee(preferences: UserPreferences): Promise<MatchResponse> {
@@ -20,6 +21,10 @@ export async function matchCoffee(preferences: UserPreferences): Promise<MatchRe
 }
 
 // Mock implementation for local development
+/**
+ * Mock implementation of matchCoffee for local development.
+ * Accepts proximity filter fields (roasterContinent, roasterCountry) in preferences.
+ */
 export async function mockMatchCoffee(preferences: UserPreferences): Promise<MatchResponse> {
   // Simulate network delay
   await new Promise((res) => setTimeout(res, 500));
