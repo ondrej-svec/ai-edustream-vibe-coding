@@ -1,0 +1,15 @@
+name: Deploy to Vercel on Tag
+
+on:
+  push:
+    tags:
+      - 'release'
+      - 'v*' # or use 'v*' for version tags
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install -g vercel
+      - run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
