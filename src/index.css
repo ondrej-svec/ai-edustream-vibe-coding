@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* Clean, minimal design system focused on accessibility and simplicity */
 
 @layer base {
   :root {
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 252 95% 63%; /* Magic UI blue/purple gradient base */
+    --primary: 213 32% 52%; /* Clean blue */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
@@ -24,64 +24,66 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 252 95% 85%; /* Lighter blue/purple accent */
-    --accent-foreground: 252 95% 30%;
+    --accent: 213 32% 52%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 220 13% 91%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 252 95% 63%;
+    --ring: 213 32% 52%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 252 95% 63%;
+    --sidebar-primary: 213 32% 52%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 252 95% 85%;
-    --sidebar-accent-foreground: 252 95% 30%;
+    --sidebar-accent: 213 32% 52%;
+    --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 252 95% 63%;
+    --sidebar-ring: 213 32% 52%;
   }
 
   .dark {
-    --background: 240 7% 10%; /* deep dark */
-    --foreground: 0 0% 100%;
+    /* Clean Nord dark theme */
+    --background: 220 16% 22%; /* Nord0 */
+    --foreground: 218 27% 92%; /* Nord4 */
 
-    --card: 240 7% 12%;
-    --card-foreground: 0 0% 100%;
+    --card: 220 17% 26%; /* Nord1 */
+    --card-foreground: 218 27% 92%;
 
-    --popover: 240 7% 12%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 220 17% 26%;
+    --popover-foreground: 218 27% 92%;
 
-    --primary: 252 95% 63%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 213 32% 52%; /* Nord8 */
+    --primary-foreground: 220 16% 22%;
 
-    --secondary: 240 7% 20%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 220 17% 32%; /* Nord2 */
+    --secondary-foreground: 218 27% 88%;
 
-    --muted: 240 7% 20%;
-    --muted-foreground: 240 5% 70%;
+    --muted: 220 17% 32%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 252 95% 85%;
-    --accent-foreground: 252 95% 30%;
+    --accent: 213 32% 52%;
+    --accent-foreground: 220 16% 22%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 354 42% 56%; /* Nord11 */
+    --destructive-foreground: 218 27% 92%;
 
-    --border: 240 7% 20%;
-    --input: 240 7% 20%;
-    --ring: 252 95% 63%;
-    --sidebar-background: 240 7% 10%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 252 95% 63%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 252 95% 85%;
-    --sidebar-accent-foreground: 252 95% 30%;
-    --sidebar-border: 240 7% 20%;
-    --sidebar-ring: 252 95% 63%;
+    --border: 220 17% 32%;
+    --input: 220 17% 32%;
+    --ring: 213 32% 52%;
+    
+    --sidebar-background: 220 16% 22%;
+    --sidebar-foreground: 218 27% 92%;
+    --sidebar-primary: 213 32% 52%;
+    --sidebar-primary-foreground: 220 16% 22%;
+    --sidebar-accent: 213 32% 52%;
+    --sidebar-accent-foreground: 220 16% 22%;
+    --sidebar-border: 220 17% 32%;
+    --sidebar-ring: 213 32% 52%;
   }
 }
 
@@ -92,8 +94,117 @@
 
   body {
     @apply bg-background text-foreground font-sans;
+    min-height: 100vh;
   }
+  
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDelay {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDelay2 {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  60% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDelay3 {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  70% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDelay4 {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  80% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Clean utility classes focused on usability */
+@layer components {
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1;
+  }
+  
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+  }
+
+  .animate-fade-in-delay {
+    animation: fadeInDelay 1.2s ease-out;
+  }
+
+  .animate-fade-in-delay-2 {
+    animation: fadeInDelay2 1.4s ease-out;
+  }
+
+  .animate-fade-in-delay-3 {
+    animation: fadeInDelay3 1.6s ease-out;
+  }
+
+  .animate-fade-in-delay-4 {
+    animation: fadeInDelay4 1.8s ease-out;
   }
 }

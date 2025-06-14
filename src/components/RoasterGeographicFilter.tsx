@@ -70,53 +70,66 @@ const RoasterGeographicFilter: React.FC<RoasterGeographicFilterProps> = ({
     : allCountries;
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <p className="text-sm text-gray-500">
-        Optional: Filter by roaster location to support local businesses or find specific regional styles.
+    <div className="space-y-6">
+      <p className="text-sm text-muted-foreground">
+        Optional: Filter by roaster location to support{" "}
+        <span className="text-primary font-medium">local businesses</span> or find specific regional styles.
       </p>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Continent Selection */}
         <div>
-          <label htmlFor="continent-select" className="block text-sm font-medium text-gray-700 mb-2">
-            Continent
+          <label htmlFor="continent-select" className="block text-sm font-medium text-foreground mb-2">
+            🌍 Continent
           </label>
-          <select
-            id="continent-select"
-            value={roasterContinent || ALL_CONTINENTS_VALUE}
-            onChange={handleContinentChange}
-            className="w-full h-12 px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-          >
-            <option value={ALL_CONTINENTS_VALUE}>{ALL_CONTINENTS}</option>
-            {continents.map((continent) => (
-              <option key={continent} value={continent}>
-                {continent}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="continent-select"
+              value={roasterContinent || ALL_CONTINENTS_VALUE}
+              onChange={handleContinentChange}
+              className="w-full h-12 px-3 py-2 border border-input rounded-md bg-background text-foreground focus-ring appearance-none cursor-pointer"
+            >
+              <option value={ALL_CONTINENTS_VALUE}>{ALL_CONTINENTS}</option>
+              {continents.map((continent) => (
+                <option key={continent} value={continent}>
+                  {continent}
+                </option>
+              ))}
+            </select>
+            {/* Custom arrow */}
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-foreground/50"></div>
+            </div>
+          </div>
         </div>
 
         {/* Country Selection */}
         <div>
-          <label htmlFor="country-select" className="block text-sm font-medium text-gray-700 mb-2">
-            Country
+          <label htmlFor="country-select" className="block text-sm font-medium text-foreground mb-2">
+            🏠 Country
           </label>
-          <select
-            id="country-select"
-            value={roasterCountry || ALL_COUNTRIES_VALUE}
-            onChange={handleCountryChange}
-            disabled={!roasterContinent}
-            className="w-full h-12 px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
-          >
-            <option value={ALL_COUNTRIES_VALUE}>{ALL_COUNTRIES}</option>
-            {filteredCountries.map((country) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="country-select"
+              value={roasterCountry || ALL_COUNTRIES_VALUE}
+              onChange={handleCountryChange}
+              disabled={!roasterContinent}
+              className="w-full h-12 px-3 py-2 border border-input rounded-md bg-background text-foreground focus-ring disabled:opacity-50 disabled:cursor-not-allowed appearance-none cursor-pointer"
+            >
+              <option value={ALL_COUNTRIES_VALUE}>{ALL_COUNTRIES}</option>
+              {filteredCountries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+            {/* Custom arrow */}
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <div className={`w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent ${!roasterContinent ? 'border-t-muted-foreground' : 'border-t-foreground/50'}`}></div>
+            </div>
+          </div>
           {!roasterContinent && (
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Select a continent first to choose a country
             </p>
           )}
@@ -125,12 +138,15 @@ const RoasterGeographicFilter: React.FC<RoasterGeographicFilterProps> = ({
 
       {/* Selection Summary */}
       {(roasterContinent || roasterCountry) && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
-          <p className="text-sm text-blue-800">
-            <span className="font-medium">Filtering by:</span>{" "}
-            {roasterContinent && !roasterCountry && `${roasterContinent} roasters`}
-            {roasterCountry && `${roasterCountry} roasters`}
-          </p>
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">🎯</span>
+            <p className="text-sm text-foreground">
+              <span className="font-medium">Filtering by:</span>{" "}
+              {roasterContinent && !roasterCountry && `${roasterContinent} roasters`}
+              {roasterCountry && `${roasterCountry} roasters`}
+            </p>
+          </div>
         </div>
       )}
     </div>

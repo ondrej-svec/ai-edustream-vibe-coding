@@ -1,73 +1,114 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import TasteQuiz from "@/components/TasteQuiz";
-import { TastePreferences } from "@/types/coffee";
-import { UI } from "@/constants";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 const Index = () => {
-  const navigate = useNavigate();
-  const [preferences, setPreferences] = useState<TastePreferences | null>(null);
-
-  const handleQuizSubmit = (prefs: TastePreferences) => {
-    setPreferences(prefs);
-    navigate("/beans", { state: { preferences: prefs } });
-  };
-
-  const handleReset = () => {
-    setPreferences(null);
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-900 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-base sm:text-lg">☕</span>
-              </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
-                {UI.APP_NAME ?? "BrewMatch"}
-              </h1>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8">
+        {/* Hero Section */}
+        <div className="text-center space-y-12 max-w-5xl mx-auto">
+          <div className="space-y-8">
+            <div className="animate-fade-in">
+              <Badge variant="secondary" className="px-6 py-3 text-base font-medium shadow-sm">
+                ☕ Powered by AI
+              </Badge>
             </div>
-            <p className="text-sm sm:text-base lg:text-lg text-gray-600 font-medium px-4">
-              {UI.APP_TAGLINE ?? "Your AI-powered coffee matchmaker"}
+            
+            <div className="space-y-6 animate-fade-in-delay">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-tight text-balance bg-gradient-to-br from-foreground to-foreground/80 bg-clip-text">
+                Find Your Perfect Coffee
+              </h1>
+              <p className="text-lg sm:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-balance">
+                Answer a few questions about your taste preferences, and we'll match you with{" "}
+                <span className="text-primary font-semibold">artisan coffee beans</span>{" "}
+                that are perfect for your palate.
+              </p>
+            </div>
+          </div>
+
+          {/* Main CTA Card */}
+          <div className="animate-fade-in-delay-2">
+            <Card className="p-8 sm:p-12 max-w-2xl mx-auto card-hover shadow-lg border-0 bg-card/50 backdrop-blur-sm">
+              <div className="space-y-12 text-center">
+                <div className="space-y-6">
+                  <h2 className="text-2xl sm:text-3xl font-semibold text-foreground">
+                    Coffee Taste Profile
+                  </h2>
+                  <p className="text-muted-foreground text-lg leading-relaxed max-w-lg mx-auto">
+                    Tell us your preferences to find your perfect match
+                  </p>
+                </div>
+                
+                <div className="pt-4">
+                  <Link to="/quiz">
+                    <Button 
+                      size="lg" 
+                      className="text-lg px-10 py-6 focus-ring shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                    >
+                      Start Your Journey
+                      <span className="ml-2">→</span>
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Feature highlights */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20 max-w-5xl mx-auto animate-fade-in-delay-3">
+            <Card className="p-8 card-hover group shadow-md hover:shadow-lg transition-all duration-300 border-0 bg-card/30 backdrop-blur-sm">
+              <div className="text-center space-y-6">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-primary-foreground text-2xl">🎯</span>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-xl text-foreground">Personalized Matching</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Advanced AI algorithms analyze your taste preferences for perfect recommendations
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-8 card-hover group shadow-md hover:shadow-lg transition-all duration-300 border-0 bg-card/30 backdrop-blur-sm">
+              <div className="text-center space-y-6">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-accent to-accent/80 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-accent-foreground text-2xl">🌍</span>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-xl text-foreground">Artisan Roasters</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Curated selection from premium coffee roasters worldwide, handpicked for quality
+                  </p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-8 card-hover group shadow-md hover:shadow-lg transition-all duration-300 border-0 bg-card/30 backdrop-blur-sm">
+              <div className="text-center space-y-6">
+                <div className="w-16 h-16 mx-auto bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-primary-foreground text-2xl">⚡</span>
+                </div>
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-xl text-foreground">Instant Results</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Get personalized coffee recommendations in seconds, ready to order
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Additional social proof or secondary CTA could go here */}
+          <div className="animate-fade-in-delay-4 pt-12">
+            <p className="text-muted-foreground text-sm">
+              Join thousands of coffee lovers who found their perfect brew
             </p>
           </div>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-            Find Your Perfect Coffee
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed px-4">
-            Answer a few questions about your taste preferences, and we'll match you 
-            with artisan coffee beans that are perfect for your palate.
-          </p>
-        </div>
-
-        <div className="flex justify-center">
-          <div className="w-full max-w-4xl">
-            <TasteQuiz onSubmit={handleQuizSubmit} onReset={handleReset} />
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 mt-12 sm:mt-16 lg:mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 text-center">
-          <p className="text-base sm:text-lg font-medium mb-2">
-            {UI.APP_NAME ?? "BrewMatch"}
-          </p>
-          <p className="text-sm sm:text-base text-gray-400">
-            {UI.FOOTER_TEXT ?? "Connecting coffee lovers with their perfect beans"}
-          </p>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 };
