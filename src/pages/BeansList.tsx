@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Coffee, TastePreferences } from "@/types/coffee";
+import { coffeeService } from "@/services/coffeeService";
+import { UserPreferences, CoffeeMatch } from "@/types/coffee-api";
 
 // Coffee Image Component with fallback placeholder
 const CoffeeImage = ({ src, alt, className }: { src?: string; alt: string; className?: string }) => {
@@ -57,68 +59,124 @@ const BeansList = () => {
   const [preferences] = useState<TastePreferences | null>(
     location.state?.preferences || null
   );
+  const [coffees, setCoffees] = useState<Coffee[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock coffee data with high-quality, professional coffee bean photography
-  const mockCoffees: Coffee[] = [
-    {
-      id: "1",
-      name: "Ethiopian Yirgacheffe",
-      roaster: "Blue Bottle Coffee",
-      roasterCountry: "United States", 
-      roasterContinent: "North America",
-      roastLevel: "light",
-      flavorNotes: ["bright", "citrusy", "floral"],
-      price: "$18.95",
-      buyLink: "#",
-      whyPicked: "Perfect match for your bright and citrusy preferences with delicate floral notes.",
+  // Convert TastePreferences to UserPreferences for API
+  const convertToUserPreferences = (prefs: TastePreferences): UserPreferences => {
+    // Map budget string to budget range
+    const budgetMap: Record<string, { min: number; max: number }> = {
+      'budget': { min: 10, max: 15 },
+      'mid-range': { min: 15, max: 25 },
+      'premium': { min: 25, max: 40 },
+    };
+
+    // Map milk preference to drinking style
+    const drinkingStyleMap: Record<string, UserPreferences['drinking_style']> = {
+      'black': 'black',
+      'milk': 'milk',
+      'plant-milk': 'plant',
+      'cream': 'cream',
+      'sugar': 'sweetened',
+    };
+
+    const budgetRange = budgetMap[prefs.budget] || { min: 15, max: 25 };
+
+    return {
+      flavor_notes: prefs.flavors,
+      budget_min: budgetRange.min,
+      budget_max: budgetRange.max,
+      drinking_style: drinkingStyleMap[prefs.milkPreference || 'black'] || 'black',
+      roast_preference: prefs.roastLevel as 'light' | 'medium' | 'dark' | undefined,
+      brew_methods: prefs.brewingMethod ? [prefs.brewingMethod] : undefined,
+      roaster_continent: prefs.roasterContinent,
+      roaster_country: prefs.roasterCountry,
+    };
+  };
+
+  // Convert API response to Coffee format
+  const convertToCoffee = (apiCoffee: CoffeeMatch, index: number): Coffee => {
+    return {
+      id: (index + 1).toString(),
+      name: apiCoffee.name,
+      roaster: apiCoffee.roaster,
+      roasterCountry: "Unknown", // API doesn't provide this
+      roasterContinent: "North America", // Default to North America
+      roastLevel: apiCoffee.roastLevel,
+      flavorNotes: apiCoffee.flavorNotes,
+      price: `$${apiCoffee.price}`,
+      buyLink: apiCoffee.purchaseLink,
+      whyPicked: `Perfect match for your taste preferences. Best enjoyed with ${apiCoffee.brewMethodFit.join(' or ')}.`,
       image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400&h=300&fit=crop&crop=center&auto=format&q=80"
-    },
-    {
-      id: "2", 
-      name: "Colombian Huila",
-      roaster: "Counter Culture Coffee",
-      roasterCountry: "United States",
-      roasterContinent: "North America", 
-      roastLevel: "medium",
-      flavorNotes: ["chocolatey", "nutty", "sweet"],
-      price: "$16.50",
-      buyLink: "#",
-      whyPicked: "Rich chocolate and nutty flavors that align with your taste profile.",
-      image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center&auto=format&q=80"
-    },
-    {
-      id: "3",
-      name: "Kenyan AA",
-      roaster: "Intelligentsia Coffee",
-      roasterCountry: "United States", 
-      roasterContinent: "North America",
-      roastLevel: "medium-light",
-      flavorNotes: ["bright", "fruity", "winey"],
-      price: "$22.00",
-      buyLink: "#",
-      whyPicked: "Bold fruit-forward profile with wine-like complexity you'll love.",
-      image: "https://images.unsplash.com/photo-1559496417-e7f25cb247f3?w=400&h=300&fit=crop&crop=center&auto=format&q=80"
-    },
-    {
-      id: "4",
-      name: "Guatemala Antigua", 
-      roaster: "Stumptown Coffee",
-      roasterCountry: "United States",
-      roasterContinent: "North America",
-      roastLevel: "medium-dark",
-      flavorNotes: ["chocolatey", "spicy", "smoky"],
-      price: "$19.75",
-      buyLink: "#",
-      whyPicked: "Deep chocolate notes with spicy undertones for a complex cup.",
-      image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop&crop=center&auto=format&q=80"
-    }
-  ];
-
-  const [coffees] = useState<Coffee[]>(mockCoffees);
+    };
+  };
 
   useEffect(() => {
-    // Here you would typically fetch coffee recommendations based on preferences
-    console.log("Preferences:", preferences);
+    const fetchCoffeeRecommendations = async () => {
+      if (!preferences) {
+        console.log("No preferences provided, using mock data");
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        console.log("🔍 API Debug Info:");
+        console.log("  VITE_API_URL:", import.meta.env.VITE_API_URL);
+        console.log("  Using service:", coffeeService.matchCoffee.name);
+        console.log("  Preferences:", preferences);
+        
+        const userPrefs = convertToUserPreferences(preferences);
+        console.log("  Converted API preferences:", userPrefs);
+        
+        console.log("🚀 Making API call...");
+        const response = await coffeeService.matchCoffee(userPrefs);
+        console.log("✅ API Response received:", response);
+        
+        const convertedCoffees = response.matches.map(convertToCoffee);
+        setCoffees(convertedCoffees);
+      } catch (err) {
+        console.error("Error fetching coffee recommendations:", err);
+        setError(err instanceof Error ? err.message : "Failed to fetch recommendations");
+        
+        // Fallback to mock data on error
+        const mockCoffees: Coffee[] = [
+          {
+            id: "1",
+            name: "Ethiopian Yirgacheffe",
+            roaster: "Blue Bottle Coffee",
+            roasterCountry: "United States", 
+            roasterContinent: "North America",
+            roastLevel: "light",
+            flavorNotes: ["bright", "citrusy", "floral"],
+            price: "$18.95",
+            buyLink: "#",
+            whyPicked: "Perfect match for your bright and citrusy preferences with delicate floral notes.",
+            image: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400&h=300&fit=crop&crop=center&auto=format&q=80"
+          },
+          {
+            id: "2", 
+            name: "Colombian Huila",
+            roaster: "Counter Culture Coffee",
+            roasterCountry: "United States",
+            roasterContinent: "North America", 
+            roastLevel: "medium",
+            flavorNotes: ["chocolatey", "nutty", "sweet"],
+            price: "$16.50",
+            buyLink: "#",
+            whyPicked: "Rich chocolate and nutty flavors that align with your taste profile.",
+            image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop&crop=center&auto=format&q=80"
+          }
+        ];
+        setCoffees(mockCoffees);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCoffeeRecommendations();
   }, [preferences]);
 
   // Helper function to format preference labels
@@ -244,9 +302,30 @@ const BeansList = () => {
           </Card>
         )}
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Finding your perfect coffee matches...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-8">
+            <div className="bg-destructive/10 text-destructive p-4 rounded-lg max-w-md mx-auto">
+              <p className="font-medium">Unable to fetch recommendations</p>
+              <p className="text-sm mt-2">{error}</p>
+              <p className="text-sm mt-2">Showing fallback recommendations instead.</p>
+            </div>
+          </div>
+        )}
+
         {/* Coffee Recommendations Grid */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-foreground text-center">Recommended for You</h2>
+          <h2 className="text-2xl font-bold text-foreground text-center">
+            {loading ? "Loading..." : "Recommended for You"}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {coffees.map((coffee) => (
               <Card key={coffee.id} className="card-hover overflow-hidden h-fit">

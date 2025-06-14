@@ -1,17 +1,15 @@
 // Types generated from BrewMatch API OpenAPI contract
 
 export interface UserPreferences {
-  flavorNotes: string[];
-  drinkingStyle: 'black' | 'milk' | 'plant' | 'cream' | 'sweetened' | 'mixed';
-  budgetRange: {
-    min: number;
-    max: number;
-  };
-  roastPreference?: 'light' | 'medium' | 'dark';
-  brewMethods?: string[];
+  flavor_notes: string[];
+  drinking_style: 'black' | 'milk' | 'plant' | 'cream' | 'sweetened' | 'mixed';
+  budget_min: number;
+  budget_max: number;
+  roast_preference?: 'light' | 'medium' | 'dark';
+  brew_methods?: string[];
   // Proximity filter fields (roaster location)
-  roasterContinent?: import('./coffee').RoasterContinent;
-  roasterCountry?: import('./coffee').RoasterCountry;
+  roaster_continent?: import('./coffee').RoasterContinent;
+  roaster_country?: import('./coffee').RoasterCountry;
 }
 
 export interface CoffeeMatch {
